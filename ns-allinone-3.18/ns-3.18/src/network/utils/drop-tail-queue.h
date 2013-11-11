@@ -64,6 +64,8 @@ private:
   virtual Ptr<Packet> DoDequeue (void);
   virtual Ptr<const Packet> DoPeek (void) const;
 
+  //gjjgjjgjj: queue size, m_packets.size()
+
   std::queue<Ptr<Packet> > m_packets;
   uint32_t m_maxPackets;
   uint32_t m_maxBytes;
