@@ -120,7 +120,6 @@ public:
    * \return the urgent pointer for this TcpHeader
    */
   uint16_t GetUrgentPointer () const;
-
   /**
    * \param source the ip source to use in the underlying
    *        ip packet.
@@ -158,7 +157,7 @@ public:
    */
   bool IsChecksumOk (void) const;
 
-private:
+public:
   uint16_t CalculateHeaderChecksum (uint16_t size) const;
   uint16_t m_sourcePort;
   uint16_t m_destinationPort;

@@ -48,7 +48,11 @@
 #include "tcp-header.h"
 #include "rtt-estimator.h"
 
+#include "ns3/ipv4-address.h"
+#include <fstream>
+
 #include <algorithm>
+
 
 NS_LOG_COMPONENT_DEFINE ("TcpSocketBase");
 
@@ -1085,6 +1089,19 @@ TcpSocketBase::ProcessEstablished (Ptr<Packet> packet, const TcpHeader& tcpHeade
 void
 TcpSocketBase::ReceivedAck (Ptr<Packet> packet, const TcpHeader& tcpHeader)
 {
+
+	std::ofstream myfile;
+	myfile.open ("example.txt");
+	printf("Length is %d %d %d %d\n",(char)tcpHeader.m_source.m_data[0],(char)tcpHeader.m_source.m_data[1],(char)tcpHeader.m_source.m_data[2],(char)tcpHeader.m_source.m_data[3]);
+	//printf  ("%02x.%02x.%02x.%02x",tcpHeader.m_source.m_data[0],tcpHeader.m_source.m_data[1],tcpHeader.m_source.m_data[2],tcpHeader.m_source.m_data[3]);
+myfile << "tcpHeader: "
+			<< static_cast<int>(tcpHeader.m_source.m_data[0]) << "."
+			 << static_cast<int>(tcpHeader.m_source.m_data[1]) << "."
+			 << static_cast<int>(tcpHeader.m_source.m_data[2]) << "."
+			 << static_cast<int>(tcpHeader.m_source.m_data[3])
+			 << "\n";
+	myfile.close();
+
   NS_LOG_FUNCTION (this << tcpHeader);
 
   // Received ACK. Compare the ACK number against highest unacked seqno

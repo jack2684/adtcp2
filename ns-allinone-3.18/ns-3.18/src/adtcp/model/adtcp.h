@@ -5,6 +5,17 @@
 namespace ns3 {
 
 /* ... */
+class GAdtcp 
+{
+public:
+private:
+
+  typedef struct
+  {
+    int a;
+  }sbsbsb;
+
+};
 
 }
 

@@ -208,7 +208,7 @@ public:
    */
   void Deserialize (TagBuffer buffer);
 
-private:
+public:
   friend bool operator == (const Address &a, const Address &b);
   friend bool operator < (const Address &a, const Address &b);
   friend std::ostream& operator<< (std::ostream& os, const Address & address);
