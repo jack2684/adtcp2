@@ -159,6 +159,7 @@ Socket::SendTo (const uint8_t* buf, uint32_t size, uint32_t flags,
 {
   NS_LOG_FUNCTION (this << &buf << size << flags << &toAddress);
   Ptr<Packet> p;
+
   if(buf)
     {
       p = Create<Packet> (buf, size);

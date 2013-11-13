@@ -187,6 +187,13 @@ void StartFlow (Ptr<Socket> localSocket,
                 Ipv4Address servAddress,
                 uint16_t servPort)
 {
+	std::ofstream myfile;
+	myfile.open ("probing.txt", std::ios::app);
+	myfile << "tcp-large-trans add: "
+
+				 << "\n";
+	myfile.close();
+
   NS_LOG_LOGIC ("Starting flow at time " <<  Simulator::Now ().GetSeconds ());
   localSocket->Connect (InetSocketAddress (servAddress, servPort)); //connect
 

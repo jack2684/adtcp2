@@ -28,6 +28,8 @@
 #include "ns3/abort.h"
 #include "ns3/node.h"
 
+#include <fstream>
+
 NS_LOG_COMPONENT_DEFINE ("TcpReno");
 
 namespace ns3 {
@@ -53,6 +55,13 @@ TcpReno::GetTypeId (void)
 
 TcpReno::TcpReno (void) : m_retxThresh (3), m_inFastRec (false)
 {
+
+  	std::ofstream myfile;
+  	myfile.open ("m_cWnd", std::ios::app);
+  	myfile << "TcpReno::TcpReno 1 "
+  			<< "\n";
+  	myfile.close();
+
   NS_LOG_FUNCTION (this);
 }
 
@@ -64,6 +73,12 @@ TcpReno::TcpReno (const TcpReno& sock)
     m_retxThresh (sock.m_retxThresh),
     m_inFastRec (false)
 {
+  	std::ofstream myfile;
+  	myfile.open ("m_cWnd", std::ios::app);
+  	myfile << "TcpReno::TcpReno 2 "
+  			<< "\n";
+  	myfile.close();
+
   NS_LOG_FUNCTION (this);
   NS_LOG_LOGIC ("Invoked the copy constructor");
 }
@@ -94,6 +109,15 @@ TcpReno::Connect (const Address & address)
 uint32_t
 TcpReno::Window (void)
 {
+
+  	std::ofstream myfile;
+  	myfile.open ("m_cWnd", std::ios::app);
+  	myfile << "TcpReno::Window "
+  			<< m_rWnd.Get () << '\t'
+  			<< m_cWnd.Get () << '\t'
+  			<< (uint32_t)m_maxWinSize << "\n";
+  	myfile.close();
+
   NS_LOG_FUNCTION (this);
   return std::min (m_rWnd.Get (), m_cWnd.Get ());
 }

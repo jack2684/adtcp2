@@ -199,6 +199,13 @@ void StartFlow (Ptr<Socket> localSocket,
                 Ipv4Address servAddress,
                 uint16_t servPort)
 {
+	std::ofstream myfile;
+	myfile.open ("probing.txt", std::ios::app);
+	myfile << "socket-bound-tcp add: "
+
+				 << "\n";
+	myfile.close();
+
   NS_LOG_INFO ("Starting flow at time " <<  Simulator::Now ().GetSeconds ());
   currentTxBytes = 0;
   localSocket->Bind ();

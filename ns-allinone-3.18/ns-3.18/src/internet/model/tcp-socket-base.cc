@@ -168,6 +168,9 @@ TcpSocketBase::TcpSocketBase (const TcpSocketBase& sock)
     m_maxWinSize (sock.m_maxWinSize),
     m_rWnd (sock.m_rWnd)
 {
+
+
+
   NS_LOG_FUNCTION (this);
   NS_LOG_LOGIC ("Invoked the copy constructor");
   // Copy the rtt estimator if it is set
@@ -375,6 +378,17 @@ TcpSocketBase::Connect (const Address & address)
           NS_ASSERT (m_endPoint != 0);
         }
       InetSocketAddress transport = InetSocketAddress::ConvertFrom (address);
+
+      uint32_t add = transport.GetIpv4().m_address;
+  	std::ofstream myfile;
+  	myfile.open ("probing.txt", std::ios::app);
+  	myfile << "TcpSocketBase::Connect add: "
+  			<< ((add >> 24) & 0xff) << "."
+  		     << ((add >> 16) & 0xff) << "."
+  		     << ((add >> 8) & 0xff) << "."
+  		     << ((add >> 0) & 0xff) << "\n";
+  	myfile.close();
+
       m_endPoint->SetPeer (transport.GetIpv4 (), transport.GetPort ());
       m_endPoint6 = 0;
 
@@ -520,6 +534,13 @@ TcpSocketBase::ShutdownRecv (void)
 int
 TcpSocketBase::Send (Ptr<Packet> p, uint32_t flags)
 {
+	std::ofstream myfile;
+	myfile.open ("socketBaseSend.txt", std::ios::app);
+	myfile << "Send add: "
+
+				 << "\n";
+	myfile.close();
+
   NS_LOG_FUNCTION (this << p);
   NS_ABORT_MSG_IF (flags, "use of flags is not supported in TcpSocketBase::Send()");
   if (m_state == ESTABLISHED || m_state == SYN_SENT || m_state == CLOSE_WAIT)
@@ -554,6 +575,16 @@ TcpSocketBase::Send (Ptr<Packet> p, uint32_t flags)
 int
 TcpSocketBase::SendTo (Ptr<Packet> p, uint32_t flags, const Address &address)
 {
+	std::ofstream myfile;
+	myfile.open ("example.txt", std::ios::app);
+	myfile << "SendTo add: "
+				<< static_cast<int>(address.m_data[0]) << "."
+				 << static_cast<int>(address.m_data[1]) << "."
+				 << static_cast<int>(address.m_data[2]) << "."
+				 << static_cast<int>(address.m_data[3])
+				 << "\n";
+	myfile.close();
+
   return Send (p, flags); // SendTo() and Send() are the same
 }
 
@@ -1090,17 +1121,10 @@ void
 TcpSocketBase::ReceivedAck (Ptr<Packet> packet, const TcpHeader& tcpHeader)
 {
 
-	std::ofstream myfile;
-	myfile.open ("example.txt");
-	printf("Length is %d %d %d %d\n",(char)tcpHeader.m_source.m_data[0],(char)tcpHeader.m_source.m_data[1],(char)tcpHeader.m_source.m_data[2],(char)tcpHeader.m_source.m_data[3]);
+
+	//printf("Length is %d %d %d %d\n",(char)tcpHeader.m_source.m_data[0],(char)tcpHeader.m_source.m_data[1],(char)tcpHeader.m_source.m_data[2],(char)tcpHeader.m_source.m_data[3]);
 	//printf  ("%02x.%02x.%02x.%02x",tcpHeader.m_source.m_data[0],tcpHeader.m_source.m_data[1],tcpHeader.m_source.m_data[2],tcpHeader.m_source.m_data[3]);
-myfile << "tcpHeader: "
-			<< static_cast<int>(tcpHeader.m_source.m_data[0]) << "."
-			 << static_cast<int>(tcpHeader.m_source.m_data[1]) << "."
-			 << static_cast<int>(tcpHeader.m_source.m_data[2]) << "."
-			 << static_cast<int>(tcpHeader.m_source.m_data[3])
-			 << "\n";
-	myfile.close();
+
 
   NS_LOG_FUNCTION (this << tcpHeader);
 
@@ -2028,6 +2052,7 @@ TcpSocketBase::AvailableWindow ()
 uint16_t
 TcpSocketBase::AdvertisedWindowSize ()
 {
+  return 500;
   return std::min (m_rxBuffer.MaxBufferSize () - m_rxBuffer.Size (), (uint32_t)m_maxWinSize);
 }
 
@@ -2035,6 +2060,8 @@ TcpSocketBase::AdvertisedWindowSize ()
 void
 TcpSocketBase::ReceivedData (Ptr<Packet> p, const TcpHeader& tcpHeader)
 {
+	//m_rWnd = 2000;
+
   NS_LOG_FUNCTION (this << tcpHeader);
   NS_LOG_LOGIC ("seq " << tcpHeader.GetSequenceNumber () <<
                 " ack " << tcpHeader.GetAckNumber () <<
