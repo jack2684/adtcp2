@@ -51,6 +51,9 @@ TcpNewReno::GetTypeId (void)
     .AddTraceSource ("CongestionWindow",
                      "The TCP connection's congestion window",
                      MakeTraceSourceAccessor (&TcpNewReno::m_cWnd))
+	 .AddTraceSource ("SocketState",
+					"The state of tcp connection, like FIN, ACK, CLOSING",
+					MakeTraceSourceAccessor (&TcpNewReno::m_state))
   ;
   return tid;
 }

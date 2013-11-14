@@ -99,12 +99,15 @@ TcpSocketBase::GetTypeId (void)
     .AddTraceSource ("HighestSequence",
                      "Highest sequence number ever sent in socket's life time",
                      MakeTraceSourceAccessor (&TcpSocketBase::m_highTxMark))
-    .AddTraceSource ("State",
-                     "TCP state",
-                     MakeTraceSourceAccessor (&TcpSocketBase::m_state))
+//    .AddTraceSource ("State",
+//                     "TCP state",
+//                     MakeTraceSourceAccessor (&TcpSocketBase::m_state))
     .AddTraceSource ("RWND",
                      "Remote side's flow control window",
                      MakeTraceSourceAccessor (&TcpSocketBase::m_rWnd))
+	 .AddTraceSource ("BaseSocketState",
+					"The state of tcp connection, like FIN, ACK, CLOSING",
+					MakeTraceSourceAccessor (&TcpSocketBase::m_state))
   ;
   return tid;
 }
@@ -2052,7 +2055,7 @@ TcpSocketBase::AvailableWindow ()
 uint16_t
 TcpSocketBase::AdvertisedWindowSize ()
 {
-  return 500;
+	//return 550;
   return std::min (m_rxBuffer.MaxBufferSize () - m_rxBuffer.Size (), (uint32_t)m_maxWinSize);
 }
 

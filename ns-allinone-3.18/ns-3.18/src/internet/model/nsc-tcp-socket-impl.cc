@@ -55,8 +55,11 @@ NscTcpSocketImpl::GetTypeId ()
   static TypeId tid = TypeId ("ns3::NscTcpSocketImpl")
     .SetParent<TcpSocket> ()
     .AddTraceSource ("CongestionWindow",
-                     "The TCP connection's congestion window",
-                     MakeTraceSourceAccessor (&NscTcpSocketImpl::m_cWnd))
+                      "The TCP connection's congestion window",
+                      MakeTraceSourceAccessor (&NscTcpSocketImpl::m_cWnd))
+  .AddTraceSource ("SocketState",
+					"the state of tcp connection, like FIN, ACK, CLOSING",
+					MakeTraceSourceAccessor (&NscTcpSocketImpl::m_state))
   ;
   return tid;
 }

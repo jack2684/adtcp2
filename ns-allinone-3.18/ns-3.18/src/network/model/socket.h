@@ -67,7 +67,7 @@ class Socket : public Object
 {
 public:
   static TypeId GetTypeId (void);
-
+  int host_id;
   Socket (void);
   virtual ~Socket (void);
 

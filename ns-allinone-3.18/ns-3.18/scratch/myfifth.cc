@@ -14,6 +14,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <iostream>
 #include <fstream>
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
@@ -100,6 +101,7 @@ MyApp::MyApp ()
 MyApp::~MyApp()
 {
   m_socket = 0;
+  std::cout << "finish at:" << Simulator::Now ().GetSeconds () << std::endl;
 }
 
 void
@@ -135,7 +137,14 @@ MyApp::StopApplication (void)
   if (m_socket)
     {
       m_socket->Close ();
+      //NS_LOG_UNCOND (Simulator::Now ().GetSeconds () << "\n");
+      
     }
+    
+/*    std::ofstream ofile;
+    ofile.open("output.txt", std::ios::app);
+    ofile << Simulator::Now ().GetSeconds () << "\n";
+    ofile.close();*/
 }
 
 void 
@@ -166,6 +175,13 @@ static void
 CwndChange (uint32_t oldCwnd, uint32_t newCwnd)
 {
   NS_LOG_UNCOND (Simulator::Now ().GetSeconds () << "\t" << newCwnd);
+}
+
+static void
+SateRec (TcpStates_t oldState, TcpStates_t newState)
+{
+  //if(newState == ns3::CLOSING) // 9 means CLOSING 
+    NS_LOG_UNCOND ("Sate is here: " << Simulator::Now ().GetSeconds () << "\t" << newState);
 }
 
 static void
@@ -203,16 +219,17 @@ main (int argc, char *argv[])
   PacketSinkHelper packetSinkHelper ("ns3::TcpSocketFactory", InetSocketAddress (Ipv4Address::GetAny (), sinkPort));
   ApplicationContainer sinkApps = packetSinkHelper.Install (nodes.Get (1));
   sinkApps.Start (Seconds (0.));
-  sinkApps.Stop (Seconds (100.));
+  sinkApps.Stop (Seconds (99.));
 
   Ptr<Socket> ns3TcpSocket = Socket::CreateSocket (nodes.Get (0), TcpSocketFactory::GetTypeId ());
   ns3TcpSocket->TraceConnectWithoutContext ("CongestionWindow", MakeCallback (&CwndChange));
+  ns3TcpSocket->TraceConnectWithoutContext ("SocketState", MakeCallback (&SateRec));
 
   Ptr<MyApp> app = CreateObject<MyApp> ();
   app->Setup (ns3TcpSocket, sinkAddress, 1040, 1000, DataRate ("1Gbps"));
   nodes.Get (0)->AddApplication (app);
   app->SetStartTime (Seconds (1.));
-  app->SetStopTime (Seconds (100.));
+  app->SetStopTime (Seconds (99.));
 
   devices.Get (1)->TraceConnectWithoutContext ("PhyRxDrop", MakeCallback (&RxDrop));
 
