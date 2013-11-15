@@ -1,0 +1,19 @@
+Waf: Entering directory `/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build'
+[   2/2061] install-ns3-header: src/adtcp/model/adtcp.h -> build/ns3/adtcp.h
+[1293/2061] cxx: src/adtcp/helper/adtcp-helper.cc -> build/src/adtcp/helper/adtcp-helper.cc.1.o
+[1294/2061] cxx: src/adtcp/model/adtcp.cc -> build/src/adtcp/model/adtcp.cc.1.o
+[1295/2061] cxx: src/adtcp/test/adtcp-test-suite.cc -> build/src/adtcp/test/adtcp-test-suite.cc.3.o
+[1296/2061] cxx: src/adtcp/examples/adtcp-example.cc -> build/src/adtcp/examples/adtcp-example.cc.1.o
+[1790/2061] cxxshlib: build/src/adtcp/model/adtcp.cc.1.o build/src/adtcp/helper/adtcp-helper.cc.1.o -> build/libns3.18-adtcp-debug.so
+[1816/2061] cxxshlib: build/src/adtcp/test/adtcp-test-suite.cc.3.o -> build/libns3.18-adtcp-test-debug.so
+[2013/2061] cxxprogram: build/src/adtcp/examples/adtcp-example.cc.1.o -> build/src/adtcp/examples/ns3.18-adtcp-example-debug
+[2042/2061] cxxprogram: build/utils/print-introspected-doxygen.cc.4.o -> build/utils/ns3.18-print-introspected-doxygen-debug
+[2041/2061] cxxprogram: build/scratch/myfirst.cc.4.o -> build/scratch/myfirst
+[2042/2061] cxxprogram: build/scratch/subdir/scratch-simulator-subdir.cc.5.o -> build/scratch/subdir/subdir
+[2043/2061] cxxprogram: build/scratch/myfifth.cc.6.o -> build/scratch/myfifth
+[2045/2061] cxxprogram: build/scratch/tcp-large-transfer.cc.3.o -> build/scratch/tcp-large-transfer
+[2045/2061] cxxprogram: build/utils/test-runner.cc.1.o -> build/utils/ns3.18-test-runner-debug
+[2046/2061] cxxprogram: build/scratch/my-tcp-large-transfer.cc.2.o -> build/scratch/my-tcp-large-transfer
+[2047/2061] cxxprogram: build/scratch/scratch-simulator.cc.1.o -> build/scratch/scratch-simulator
+Waf: Leaving directory `/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build'
+'build' finished successfully (5.299s)

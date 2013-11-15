@@ -46,7 +46,7 @@ NS_LOG_COMPONENT_DEFINE ("TcpLargeTransfer");
 
 
 // The number of bytes to send in this simulation.
-static const uint32_t totalTxBytes = 100000;
+static const uint32_t totalTxBytes = 1200;
 static uint32_t currentTxBytesArray[2] = {0,0};
 
 // Perform series of 1040 byte writes (this is a multiple of 26 since
@@ -66,6 +66,10 @@ static void
 CwndTracer (uint32_t oldval, uint32_t newval)
 {
   NS_LOG_INFO ("Moving cwnd from " << oldval << " to " << newval);
+	std::ofstream myfile;
+	myfile.open ("cwnd.txt", std::ios::app);
+	myfile << Simulator::Now ().GetSeconds () << " Moving cwnd from " << oldval << " to " << newval << std::endl;
+	myfile.close();
 }
 
 int main (int argc, char *argv[])
@@ -102,7 +106,7 @@ int main (int argc, char *argv[])
   // First make and configure the helper, so that it will put the appropriate
   // attributes on the network interfaces and channels we are about to install.
   PointToPointHelper p2p;
-  p2p.SetDeviceAttribute ("DataRate", DataRateValue (DataRate ("100Kbps")));
+  p2p.SetDeviceAttribute ("DataRate", DataRateValue (DataRate ("1Mbps")));
   p2p.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (1000)));
 
   // And then install devices and channels connecting our topology.
@@ -148,10 +152,10 @@ int main (int argc, char *argv[])
   ApplicationContainer apps2 = sink2.Install (n1n2.Get (1));
 
   apps.Start (Seconds (0.0));
-  apps.Stop (Seconds (5.0));
+  apps.Stop (Seconds (500.0));
 
   apps2.Start (Seconds (0.0));
-  apps2.Stop (Seconds (5.0));
+  apps2.Stop (Seconds (500.0));
 
   // Create a source to send packets from n0.  Instead of a full Application
   // and the helper APIs you might see in other example files, this example
@@ -198,7 +202,7 @@ int main (int argc, char *argv[])
 
   // Finally, set up the simulator to run.  The 1000 second hard limit is a
   // failsafe in case some change above causes the simulation to never end
-  Simulator::Stop (Seconds (500));
+  Simulator::Stop (Seconds (1000));
   Simulator::Run ();
   Simulator::Destroy ();
 }
@@ -221,7 +225,7 @@ void StartFlow (Ptr<Socket> localSocket,
   // if we blocked and new tx buffer space becomes available
   localSocket->SetSendCallback (MakeCallback (&WriteUntilBufferFull));
  // WriteUntilBufferFull (localSocket, localSocket->GetTxAvailable ());
-  std::cout << "reall finish this time!!: " << Simulator::Now ().GetSeconds () << std::endl;
+  //std::cout << "reall finish this time!!: " << Simulator::Now ().GetSeconds () << std::endl;
 }
 
 void WriteUntilBufferFull (Ptr<Socket> localSocket, uint32_t txSpace)
@@ -242,7 +246,15 @@ void WriteUntilBufferFull (Ptr<Socket> localSocket, uint32_t txSpace)
           return;
         }
       currentTxBytes += amountSent;
+
+
     }
+  std::cout << localSocket->host_id << " info: " << Simulator::Now ().GetSeconds () << "s,\t"
+    << "currentTxBytes: " << currentTxBytes << ",\t"
+    << "totalTxBytes: " << totalTxBytes << ",\t"
+    << "localSocket->GetTxAvailable (): " << localSocket->GetTxAvailable ()
+      << std::endl;
+//  	std::cin.get();
     	std::ofstream myfile;\
 
 	myfile.open ("finishtime.txt", std::ios::app);
@@ -250,11 +262,7 @@ void WriteUntilBufferFull (Ptr<Socket> localSocket, uint32_t txSpace)
 
 				 << std::endl;
 	
-  std::cout << localSocket->host_id << " info: " << Simulator::Now ().GetSeconds () << "s,\t"
-    << "currentTxBytes: " << currentTxBytes << ",\t"
-    << "totalTxBytes: " << totalTxBytes << ",\t"
-    << "localSocket->GetTxAvailable (): " << localSocket->GetTxAvailable ()
-      << std::endl;
+
   myfile.close();
   localSocket->Close ();
 }

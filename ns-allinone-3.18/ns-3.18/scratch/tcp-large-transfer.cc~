@@ -46,7 +46,7 @@ NS_LOG_COMPONENT_DEFINE ("TcpLargeTransfer");
 
 
 // The number of bytes to send in this simulation.
-static const uint32_t totalTxBytes = 100000;
+static const long long totalTxBytes = 100;
 static uint32_t currentTxBytes = 0;
 // Perform series of 1040 byte writes (this is a multiple of 26 since
 // we want to detect data splicing in the output stream)
@@ -196,7 +196,7 @@ void StartFlow (Ptr<Socket> localSocket,
   // if we blocked and new tx buffer space becomes available
   localSocket->SetSendCallback (MakeCallback (&WriteUntilBufferFull));
  // WriteUntilBufferFull (localSocket, localSocket->GetTxAvailable ());
-  std::cout << "reall finish this time!!: " << Simulator::Now ().GetSeconds () << std::endl;
+  //std::cout << "reall finish this time!!: " << Simulator::Now ().GetSeconds () << std::endl;
 }
 
 void WriteUntilBufferFull (Ptr<Socket> localSocket, uint32_t txSpace)
@@ -222,11 +222,11 @@ void WriteUntilBufferFull (Ptr<Socket> localSocket, uint32_t txSpace)
 
 				 << std::endl;
 	
-  std::cout << "info: " << Simulator::Now ().GetSeconds () << "s,\t"
+  /*std::cout << "info: " << Simulator::Now ().GetSeconds () << "s,\t"
     << "currentTxBytes: " << currentTxBytes << ",\t"
     << "totalTxBytes: " << totalTxBytes << ",\t"
     << "localSocket->GetTxAvailable (): " << localSocket->GetTxAvailable ()
-      << std::endl;
+      << std::endl;*.
   myfile.close();
   localSocket->Close ();
 }
