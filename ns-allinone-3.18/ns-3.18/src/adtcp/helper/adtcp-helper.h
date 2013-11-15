@@ -2,7 +2,7 @@
 #ifndef ADTCP_HELPER_H
 #define ADTCP_HELPER_H
 
-#include "ns3/adtcp.h"
+#include "ns3/fst.h"
 
 namespace ns3 {
 

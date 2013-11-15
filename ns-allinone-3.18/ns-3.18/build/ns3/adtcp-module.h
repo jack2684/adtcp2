@@ -8,5 +8,6 @@
 
 // Module headers:
 #include "adtcp-helper.h"
-#include "adtcp.h"
+#include "flow.h"
+#include "fst.h"
 #endif

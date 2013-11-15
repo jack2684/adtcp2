@@ -68,24 +68,34 @@ namespace ns3 {
     else
       return true;
   }  
-  
-  
-  
-  
-  
-
+ 
   int 
   Fst::AddFlow(Flow f)
   {
     if(CheckValid(f))  
       return -1; 
     
-    std::list<Flow>::iterator it; 
+    std::list<Flow>::iterator it, itPre; 
     for(it = m_flowList.begin(); 
       it != m_flowList.end() && f.GetFlowSize() >= it->GetFlowSize(); 
       it++ ) { }
-    m_flowList.insert(it, f);
     
+    if(m_flowList.size() == 0)
+    {
+      f.m_adtcpSate = Flow::ACTIVE;
+    }else
+    {
+      if(it == m_flowList.begin())
+      {
+        f.m_adtcpSate = Flow::ACTIVE;
+      }else
+      {
+        itPre = it - 1;
+        f.m_adtcpSate = itPre.GetAdctpState();
+      }   
+    }   
+    
+    m_flowList.insert(it, f);
     return 0;
   }
 
@@ -93,7 +103,7 @@ namespace ns3 {
   Fst::RmFlow(Flow f)
   {
     if(CheckValid(f))  
-      return -1; 
+      exit(-1); 
     
     m_flowList.remove(f);
     
@@ -104,7 +114,7 @@ namespace ns3 {
   Fst::FlowSchedule(Flow f)
   {
     if(CheckValid(f))  
-      return -1; 
+      exit(-1);  
       
     // if there is only 1 flow, we don't schedule
     if(m_flowList.size() > 1)
@@ -215,6 +225,16 @@ namespace ns3 {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

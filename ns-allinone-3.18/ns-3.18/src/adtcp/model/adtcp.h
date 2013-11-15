@@ -14,6 +14,7 @@ namespace ns3 {
   public:
     Flow();
     Flow(Ipv4EndPoint* m_endPoint);
+    Flow(Ipv4EndPoint* m_endPoint, long long m_flowSize);
 
     typedef enum {
       ACTIVE,       // 0
@@ -90,7 +91,18 @@ namespace ns3 {
     std::list<Flow>::iterator itCurrFlow;
   };
   
-  typedef std::map<Ipv4EndPoint*, Fst> FstMapper;
+  struct HostAddrPort
+  {
+      Ipv4Address addr;
+      uint16_t port;
+      HostAddrPort(Ipv4Address a, uint16_t p)
+      {
+          addr = a;
+          port = p;
+      }
+  };
+  
+  typedef std::map<HostAddrPort, Fst> FstMapper;
 }
 
 #endif /* ADTCP_H */
