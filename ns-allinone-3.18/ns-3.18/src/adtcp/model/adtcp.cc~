@@ -44,7 +44,7 @@ namespace ns3 {
     
     std::list<Flow>::iterator it, itPre; 
     for(it = m_flowList.begin(); 
-      it != m_flowList.end() && f.GetFlowSize() >= it->GetFlowSize(); 
+      it != m_flowList.end() && f.GetFlowSize() > it->GetFlowSize(); 
       it++ ) { }
     
     if(m_flowList.size() == 0)
@@ -70,11 +70,18 @@ namespace ns3 {
   int 
   Fst::AddFlow(uint64_g flowId, uint32_g flowSize)
   {
-    if(debug) std::cout << "\t Fst::AddFlow\n";
+    if(debug) std::cout << "Fst::AddFlow\n";
     Flow f(flowId, flowSize);
     if(!CheckValid(f))  
       return -1;     
       
+    std::set<uint64_g>::iterator setit = m_flowIdSet.find(flowId);
+    if(setit != m_flowIdSet.end())
+    {
+      if(debug2) std::cout << "AddFlow: duplicate flow adding\n";
+      return -1;
+    }
+    m_flowIdSet.insert(flowId);
     
     std::list<Flow>::iterator it, itPre; 
     // to find the right position, sort by flow size
@@ -110,7 +117,28 @@ namespace ns3 {
     if(!CheckValid(f))  
       exit(-1); 
     
+    m_flowIdSet.erase(f.GetFlowId());
     m_flowList.remove(f);
+    
+    return 0;
+  }
+
+  int 
+  Fst::RmFlow(uint64_g flowId)
+  {
+    if(debug) std::cout << " Fst::RmFlow\n";
+    
+    m_flowIdSet.erase(flowId);
+    std::list<Flow>::iterator fit = Find(flowId);
+    if(fit != m_flowList.end())
+    {
+      m_flowList.erase(fit);
+    }
+    else
+    {
+      if(debug2) std::cout << "cannot remove the non-exisitng flow\n";
+      return -1;
+    }
     
     return 0;
   }
@@ -307,6 +335,15 @@ namespace ns3 {
     return fit;
   }
 
+  std::list<Flow>::iterator 
+  Fst::Find(uint32_g flowId)
+  {
+    if(debug) std::cout << "\t Fst::Find\n";
+    std::list<Flow>::iterator fit = m_flowList.begin();
+    for(; fit != m_flowList.end() && fit->GetFlowId != flowId; fit++){}
+    //if(debug && fit != m_flowList.end()) std::cout << "\t\t Fst::Find: flow found! " ;
+    return fit;
+  }
 
   Flow::Flow(AddrPort newAddrPort, uint32_g flowSize)
   {
@@ -315,7 +352,7 @@ namespace ns3 {
     m_adtcpSate = ACTIVE;
   }
   
-  Flow(uint64_g flowId, uint32_g flowSize)
+  Flow::Flow(uint64_g flowId, uint32_g flowSize)
   {
     m_flowId = flowId;
     m_flowSize = flowSize;

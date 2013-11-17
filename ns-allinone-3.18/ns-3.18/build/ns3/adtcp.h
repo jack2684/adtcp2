@@ -122,7 +122,7 @@ typedef unsigned long long uint64_g;
     FlowSate_t m_adtcpSate;
     // flow rWnd
     uint32_g m_rWnd;
-    
+
   }; 
   
   
@@ -137,8 +137,9 @@ typedef unsigned long long uint64_g;
     
     // basic flow list operation
     int AddFlow(Flow f);
-    int AddFlow(uint64_g m_flowId, uint32_g m_flowSize);
+    int AddFlow(uint64_g flowId, uint32_g flowSize);
     int RmFlow(Flow f);
+    int RmFlow(uint64_g flowId);
     
     // flow schedule methods
     //bool IsRegiter(Ipv4EndPoint* m_endPoint);           // check if it an end host
@@ -156,6 +157,7 @@ typedef unsigned long long uint64_g;
     // Get Stuff
     //std::list<Flow>::iterator find(Flow f);
     std::list<Flow>::iterator Find(Flow f);
+    std::list<Flow>::iterator Find(uint32_g flowId);
     FlowList GetFlowList();
     double GetMinTh();
     double GetMaxTh();
@@ -166,7 +168,6 @@ typedef unsigned long long uint64_g;
   public:
     // the flow schedule list
     FlowList m_flowList;
-
     // local adress of fst
     uint32_g m_localAddr;
     // Queue limit in bytes / packets
@@ -177,13 +178,19 @@ typedef unsigned long long uint64_g;
     double m_maxTh;
     // Average queue length
     double m_qAvg;
+    // exisitng flowId, in case of duplicate
+    std::set<uint64_g> m_flowIdSet;
     
     // iterator that point the current controled flow
     std::list<Flow>::iterator itCurrFlow;
   };
   
+  // this is very important, for global variable 
+  // if you want to  use global variable, like h2f in the below
+  // you should make statement of a static variable,
+  // and then at the .cc you should define such as 'Host2Fst H2F::h2f' globally,
+  // (without using extern), then you can use it globally
   typedef std::map<Ipv4Address, Fst> Host2Fst;
-  
   class H2F
   {
   public:
