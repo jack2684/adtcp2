@@ -1,5 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 
+#include <iostream>
+
 #include "fst.h"
 
 namespace ns3 { 
@@ -51,6 +53,10 @@ namespace ns3 {
     if(CheckValid(f))  
       exit(-1);  
       
+    std::list<Flow>::iterator fit = Find(f);
+    if(fit == m_flowList.end())
+      AddFlow(f);
+      
     // if there is only 1 flow, we don't schedule
     if(m_flowList.size() > 1)
     {
@@ -59,17 +65,29 @@ namespace ns3 {
       {
         // if average queue too long, we slow down (pause it)
         if(ExcceedMaxTh())
-          return f.SlowDown(); 
+          f.SlowDown(); 
       }else if(ToAccelerate(f))
       {
         // if average queue too short, we slow down (pause it)
         if(ExcceedMinTh())
-          return f.SpeedUp(); 
+          f.SpeedUp(); 
       }
     }
     // no schedule
     return -1;
   }
+  
+  /*int 
+  Fst::FlowScheduleHandler(Flow f)
+  {
+    // check if the 
+    if(fst.IsRegiter(f.m_endPoint))
+    {
+      AddrPort currAddrPort(m_endPoint->GetLocalAddress(), m_endPoint->GetLocalPort());
+      fst.FlowSchedule(ap2f[currAddrPort]);
+    }
+    return 0;
+  }*/
 
   bool 
   Fst::ExcceedMaxTh()
@@ -137,9 +155,9 @@ namespace ns3 {
   bool 
   Fst::CheckValid(Flow f)
   {
-    if(f.GetEndPoint() == 0)  
+    if(f.GetAddrPort() == 0)  
     {
-      std::cout << "Fst::AddFlow: f.m_endPoint is == 0, not set\n";
+      std::cout << "Fst::AddFlow: f.addrPort is == 0, not set\n";
       return false;
     }else
       return true;
@@ -158,7 +176,28 @@ namespace ns3 {
         return false;
       }
   }
-
+  
+  /*bool 
+  Fst::IsRegiter(Ipv4EndPoint* m_endPoint)
+  {
+    std::list<Flow>::iterator fit = h2f.begin();
+    for(; fit != h2f.end() && *fit != m_endPoint->m_localAddr; fit++)
+    std::list<Flow>::iterator fit = find()
+    if(fit != h2f.end())
+    {
+      return true;
+    }
+    else
+      return false;
+  }*/
+  
+  std::list<Flow>::iterator 
+  Fst::Find(Flow f)
+  {
+    std::list<Flow>::iterator fit = m_flowList.begin();
+    for(; fit != m_flowList.end() && *fit != f; fit++){}
+    return fit;
+  }
 }
 
 

@@ -2,24 +2,26 @@
 #ifndef FST_H
 #define FST_H
 
-#include "ns3/tcp-socket-base.h"
-#include "ns3/red-queue.h"
+//#include "ns3/red-queue.h"
 #include "flow.h"
 
 #include <list>
+#include <map>
 
 namespace ns3 {
   // Flow schedule table
   class Fst
   {
   public:
-    Fst();
+    //Fst();
     
     // basic flow list operation
     int AddFlow(Flow f);
     int RmFlow(Flow f);
     
     // flow schedule methods
+    //bool IsRegiter(Ipv4EndPoint* m_endPoint);           // check if it an end host
+    //int FlowScheduleHandler(Flow f);         // begin flow schedule handler
     int FlowSchedule(Flow f);         // begin flow schedule
     bool ExcceedMaxTh();              // check if average queue size too long
     bool ExcceedMinTh();              // check if average queue size too small
@@ -31,14 +33,17 @@ namespace ns3 {
     bool FoundNothing(std::list<Flow>::iterator it);
     
     // Get Stuff
+    //std::list<Flow>::iterator find(Flow f);
+    std::list<Flow>::iterator Find(Flow f);
     
   private:
     // the flow schedule list
+    uint32_g m_localAddr;
     typedef std::list<Flow> FlowList;
     FlowList m_flowList;
 
     // Queue limit in bytes / packets
-    uint32_t m_queueLimit;
+    uint32_g m_queueLimit;
     // Min avg length threshold (bytes)
     double m_minTh;
     // Max avg length threshold (bytes), should be >= 2*minTh
@@ -50,19 +55,8 @@ namespace ns3 {
     std::list<Flow>::iterator itCurrFlow;
   };
   
-  /*struct HostAddrPort
-  {
-      Ipv4Address addr;
-      uint16_t port;
-      HostAddrPort(Ipv4Address a, uint16_t p)
-      {
-          addr = a;
-          port = p;
-      }
-  };*/
   
-  typedef std::map<Ipv4Address, Fst> Host2Fst;
-  typedef std::map<RedQueue, Ipv4Address> Queue2Fst;
+//  typedef std::map<RedQueue, Ipv4Address> Queue2Fst;
 }
 
 #endif /* ADTCP_H */

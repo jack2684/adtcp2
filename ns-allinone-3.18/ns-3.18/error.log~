@@ -1,0 +1,188 @@
+Waf: Entering directory `/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build'
+[ 269/2063] install-ns3-header: src/internet/model/tcp-socket-base.h -> build/ns3/tcp-socket-base.h
+[ 735/2063] cxx: examples/socket/socket-bound-static-routing.cc -> build/examples/socket/socket-bound-static-routing.cc.1.o
+[ 736/2063] cxx: examples/socket/socket-bound-tcp-static-routing.cc -> build/examples/socket/socket-bound-tcp-static-routing.cc.2.o
+[ 737/2063] cxx: examples/socket/socket-options-ipv4.cc -> build/examples/socket/socket-options-ipv4.cc.3.o
+[ 738/2063] cxx: examples/socket/socket-options-ipv6.cc -> build/examples/socket/socket-options-ipv6.cc.4.o
+[ 742/2063] cxx: examples/naming/object-names.cc -> build/examples/naming/object-names.cc.1.o
+[ 743/2063] cxx: examples/energy/energy-model-example.cc -> build/examples/energy/energy-model-example.cc.1.o
+[ 744/2063] cxx: examples/realtime/realtime-udp-echo.cc -> build/examples/realtime/realtime-udp-echo.cc.1.o
+[ 746/2063] cxx: examples/ipv6/icmpv6-redirect.cc -> build/examples/ipv6/icmpv6-redirect.cc.1.o
+[ 748/2063] cxx: examples/ipv6/ping6.cc -> build/examples/ipv6/ping6.cc.2.o
+[ 749/2063] cxx: examples/ipv6/radvd.cc -> build/examples/ipv6/radvd.cc.3.o
+[ 750/2063] cxx: examples/ipv6/radvd-two-prefix.cc -> build/examples/ipv6/radvd-two-prefix.cc.4.o
+[ 751/2063] cxx: examples/ipv6/fragmentation-ipv6.cc -> build/examples/ipv6/fragmentation-ipv6.cc.6.o
+[ 752/2063] cxx: examples/ipv6/fragmentation-ipv6-two-MTU.cc -> build/examples/ipv6/fragmentation-ipv6-two-MTU.cc.7.o
+[ 753/2063] cxx: examples/ipv6/loose-routing-ipv6.cc -> build/examples/ipv6/loose-routing-ipv6.cc.8.o
+[ 754/2063] cxx: examples/error-model/simple-error-model.cc -> build/examples/error-model/simple-error-model.cc.1.o
+[ 755/2063] cxx: examples/tcp/tcp-large-transfer.cc -> build/examples/tcp/tcp-large-transfer.cc.1.o
+[ 757/2063] cxx: examples/tcp/tcp-nsc-lfn.cc -> build/examples/tcp/tcp-nsc-lfn.cc.2.o
+[ 758/2063] cxx: examples/tcp/tcp-nsc-zoo.cc -> build/examples/tcp/tcp-nsc-zoo.cc.3.o
+[ 759/2063] cxx: examples/tcp/tcp-star-server.cc -> build/examples/tcp/tcp-star-server.cc.4.o
+[ 760/2063] cxx: examples/tcp/star.cc -> build/examples/tcp/star.cc.5.o
+[ 762/2063] cxx: examples/tcp/tcp-bulk-send.cc -> build/examples/tcp/tcp-bulk-send.cc.6.o
+[ 763/2063] cxx: examples/tcp/tcp-nsc-comparison.cc -> build/examples/tcp/tcp-nsc-comparison.cc.7.o
+[ 764/2063] cxx: examples/tcp/tcp-variants-comparison.cc -> build/examples/tcp/tcp-variants-comparison.cc.8.o
+[ 766/2063] cxx: examples/routing/dynamic-global-routing.cc -> build/examples/routing/dynamic-global-routing.cc.1.o
+[ 771/2063] cxx: examples/routing/static-routing-slash32.cc -> build/examples/routing/static-routing-slash32.cc.2.o
+[ 861/2063] cxx: examples/routing/global-routing-slash32.cc -> build/examples/routing/global-routing-slash32.cc.3.o
+[ 906/2063] cxx: examples/routing/global-injection-slash32.cc -> build/examples/routing/global-injection-slash32.cc.4.o
+[ 909/2063] cxx: examples/routing/simple-global-routing.cc -> build/examples/routing/simple-global-routing.cc.5.o
+[ 910/2063] cxx: examples/routing/simple-alternate-routing.cc -> build/examples/routing/simple-alternate-routing.cc.6.o
+[ 949/2063] cxx: examples/routing/mixed-global-routing.cc -> build/examples/routing/mixed-global-routing.cc.7.o
+[ 950/2063] cxx: examples/routing/simple-routing-ping6.cc -> build/examples/routing/simple-routing-ping6.cc.8.o
+[ 951/2063] cxx: examples/routing/manet-routing-compare.cc -> build/examples/routing/manet-routing-compare.cc.9.o
+[1002/2063] cxx: examples/stats/wifi-example-sim.cc -> build/examples/stats/wifi-example-sim.cc.1.o
+[1006/2063] cxx: examples/stats/wifi-example-apps.cc -> build/examples/stats/wifi-example-apps.cc.1.o
+[1007/2063] cxx: examples/udp-client-server/udp-client-server.cc -> build/examples/udp-client-server/udp-client-server.cc.1.o
+[1018/2063] cxx: examples/udp-client-server/udp-trace-client-server.cc -> build/examples/udp-client-server/udp-trace-client-server.cc.2.o
+[1020/2063] cxx: examples/tutorial/first.cc -> build/examples/tutorial/first.cc.2.o
+[1083/2063] cxx: examples/tutorial/second.cc -> build/examples/tutorial/second.cc.3.o
+[1146/2063] cxx: examples/tutorial/third.cc -> build/examples/tutorial/third.cc.4.o
+[1147/2063] cxx: examples/tutorial/fifth.cc -> build/examples/tutorial/fifth.cc.6.o
+[1148/2063] cxx: examples/tutorial/sixth.cc -> build/examples/tutorial/sixth.cc.7.o
+[1150/2063] cxx: examples/tutorial/seventh.cc -> build/examples/tutorial/seventh.cc.8.o
+[1162/2063] cxx: examples/wireless/mixed-wireless.cc -> build/examples/wireless/mixed-wireless.cc.1.o
+[1175/2063] cxx: examples/wireless/wifi-clear-channel-cmu.cc -> build/examples/wireless/wifi-clear-channel-cmu.cc.3.o
+[1176/2063] cxx: examples/wireless/wifi-wired-bridging.cc -> build/examples/wireless/wifi-wired-bridging.cc.5.o
+[1177/2063] cxx: examples/wireless/simple-wifi-frame-aggregation.cc -> build/examples/wireless/simple-wifi-frame-aggregation.cc.6.o
+[1179/2063] cxx: examples/wireless/multirate.cc -> build/examples/wireless/multirate.cc.7.o
+[1255/2063] cxx: examples/wireless/wifi-simple-adhoc.cc -> build/examples/wireless/wifi-simple-adhoc.cc.8.o
+[1267/2063] cxx: examples/wireless/wifi-simple-adhoc-grid.cc -> build/examples/wireless/wifi-simple-adhoc-grid.cc.9.o
+[1268/2063] cxx: examples/wireless/wifi-simple-infra.cc -> build/examples/wireless/wifi-simple-infra.cc.10.o
+[1269/2063] cxx: examples/wireless/wifi-simple-interference.cc -> build/examples/wireless/wifi-simple-interference.cc.11.o
+[1270/2063] cxx: examples/wireless/wifi-blockack.cc -> build/examples/wireless/wifi-blockack.cc.12.o
+[1271/2063] cxx: examples/wireless/wifi-hidden-terminal.cc -> build/examples/wireless/wifi-hidden-terminal.cc.14.o
+[1299/2063] cxx: examples/wireless/ht-wifi-network.cc -> build/examples/wireless/ht-wifi-network.cc.15.o
+[1300/2063] cxx: examples/matrix-topology/matrix-topology.cc -> build/examples/matrix-topology/matrix-topology.cc.1.o
+[1366/2063] cxx: examples/udp/udp-echo.cc -> build/examples/udp/udp-echo.cc.1.o
+[1367/2063] cxx: scratch/my-tcp-large-transfer.cc -> build/scratch/my-tcp-large-transfer.cc.2.o
+[1370/2063] cxx: scratch/tcp-large-transfer.cc -> build/scratch/tcp-large-transfer.cc.3.o
+[1380/2063] cxx: scratch/myfirst.cc -> build/scratch/myfirst.cc.4.o
+[1383/2063] cxx: scratch/myfifth.cc -> build/scratch/myfifth.cc.6.o
+[1394/2063] cxx: src/tap-bridge/examples/tap-wifi-dumbbell.cc -> build/src/tap-bridge/examples/tap-wifi-dumbbell.cc.4.o
+[1395/2063] cxx: src/tap-bridge/examples/tap-csma.cc -> build/src/tap-bridge/examples/tap-csma.cc.1.o
+[1396/2063] cxx: src/nix-vector-routing/examples/nms-p2p-nix.cc -> build/src/nix-vector-routing/examples/nms-p2p-nix.cc.2.o
+[1397/2063] cxx: src/network/examples/droptail_vs_red.cc -> build/src/network/examples/droptail_vs_red.cc.4.o
+[1398/2063] cxx: src/network/examples/red-tests.cc -> build/src/network/examples/red-tests.cc.3.o
+[1399/2063] cxx: src/netanim/examples/dynamic_linknode.cc -> build/src/netanim/examples/dynamic_linknode.cc.6.o
+[1408/2063] cxx: src/netanim/examples/wireless-animation.cc -> build/src/netanim/examples/wireless-animation.cc.4.o
+[1421/2063] cxx: src/netanim/test/netanim-test.cc -> build/src/netanim/test/netanim-test.cc.3.o
+[1422/2063] cxx: src/lte/examples/lena-dual-stripe.cc -> build/src/lte/examples/lena-dual-stripe.cc.2.o
+[1423/2063] cxx: src/lte/test/test-lte-x2-handover-measures.cc -> build/src/lte/test/test-lte-x2-handover-measures.cc.3.o
+[1424/2063] cxx: src/lte/test/test-lte-x2-handover.cc -> build/src/lte/test/test-lte-x2-handover.cc.3.o
+[1425/2063] cxx: src/lte/test/lte-test-pss-ff-mac-scheduler.cc -> build/src/lte/test/lte-test-pss-ff-mac-scheduler.cc.3.o
+[1426/2063] cxx: src/internet/examples/main-simple.cc -> build/src/internet/examples/main-simple.cc.1.o
+[1507/2063] cxx: src/internet/test/rtt-test.cc -> build/src/internet/test/rtt-test.cc.3.o
+[1508/2063] cxx: src/fd-net-device/examples/fd-emu-udp-echo.cc -> build/src/fd-net-device/examples/fd-emu-udp-echo.cc.6.o
+[1523/2063] cxx: src/fd-net-device/examples/fd-emu-ping.cc -> build/src/fd-net-device/examples/fd-emu-ping.cc.5.o
+[1524/2063] cxx: src/fd-net-device/examples/realtime-dummy-network.cc -> build/src/fd-net-device/examples/realtime-dummy-network.cc.3.o
+[1525/2063] cxx: src/fd-net-device/helper/tap-fd-net-device-helper.cc -> build/src/fd-net-device/helper/tap-fd-net-device-helper.cc.1.o
+[1543/2063] cxx: src/emu/examples/emu-udp-echo.cc -> build/src/emu/examples/emu-udp-echo.cc.1.o
+[1558/2063] cxx: src/csma-layout/examples/csma-star.cc -> build/src/csma-layout/examples/csma-star.cc.1.o
+[1561/2063] cxx: src/csma/examples/csma-ping.cc -> build/src/csma/examples/csma-ping.cc.6.o
+[1562/2063] cxx: src/csma/examples/csma-multicast.cc -> build/src/csma/examples/csma-multicast.cc.4.o
+[1563/2063] cxx: src/csma/examples/csma-broadcast.cc -> build/src/csma/examples/csma-broadcast.cc.2.o
+[1596/2063] cxx: src/aodv/examples/aodv.cc -> build/src/aodv/examples/aodv.cc.1.o
+[1601/2063] cxx: src/adtcp/examples/adtcp-example.cc -> build/src/adtcp/examples/adtcp-example.cc.1.o
+[1602/2063] cxx: src/adtcp/test/adtcp-test-suite.cc -> build/src/adtcp/test/adtcp-test-suite.cc.3.o
+[1661/2063] cxx: src/adtcp/model/fst.cc -> build/src/adtcp/model/fst.cc.1.o
+In file included from ./ns3/fst.h:5:0,
+                 from ./ns3/adtcp-helper.h:5,
+                 from ../src/adtcp/examples/adtcp-example.cc:4:
+./ns3/tcp-socket-base.h:247:3: error: ‘Fst’ does not name a type
+In file included from ./ns3/fst.h:5:0,
+                 from ../src/adtcp/test/adtcp-test-suite.cc:4:
+./ns3/tcp-socket-base.h:247:3: error: ‘Fst’ does not name a type
+In file included from ../src/adtcp/model/fst.h:5:0,
+                 from ../src/adtcp/model/fst.cc:3:
+./ns3/tcp-socket-base.h:247:3: error: ‘Fst’ does not name a type
+../src/adtcp/model/fst.cc: In member function ‘int ns3::Fst::FlowSchedule(ns3::Flow)’:
+../src/adtcp/model/fst.cc:54:37: error: ‘h2f’ was not declared in this scope
+../src/adtcp/model/fst.cc:55:39: error: ‘m_endPoint’ was not declared in this scope
+../src/adtcp/model/fst.cc: In member function ‘int ns3::Fst::FlowScheduleHandler(ns3::Flow)’:
+../src/adtcp/model/fst.cc:82:8: error: ‘fst’ was not declared in this scope
+./ns3/flow.h:48:19: error: ‘ns3::Ipv4EndPoint* ns3::Flow::m_endPoint’ is private
+../src/adtcp/model/fst.cc:82:24: error: within this context
+../src/adtcp/model/fst.cc:84:29: error: ‘m_endPoint’ was not declared in this scope
+../src/adtcp/model/fst.cc:85:24: error: ‘ap2f’ was not declared in this scope
+../src/adtcp/model/fst.cc:87:3: error: no return statement in function returning non-void [-Werror=return-type]
+../src/adtcp/model/fst.cc: In member function ‘bool ns3::Fst::FoundNothing(std::list<ns3::Flow>::iterator)’:
+../src/adtcp/model/fst.cc:168:8: error: ‘g’ was not declared in this scope
+../src/adtcp/model/fst.cc:169:9: error: expected ‘;’ before ‘std’
+../src/adtcp/model/fst.cc: In member function ‘bool ns3::Fst::IsRegiter(ns3::Ipv4EndPoint*)’:
+../src/adtcp/model/fst.cc:180:37: error: ‘h2f’ was not declared in this scope
+./ns3/ipv4-end-point.h:84:15: error: ‘ns3::Ipv4Address ns3::Ipv4EndPoint::m_localAddr’ is private
+../src/adtcp/model/fst.cc:181:51: error: within this context
+../src/adtcp/model/fst.cc:181:51: error: no match for ‘operator!=’ in ‘fit.std::_List_iterator<_Tp>::operator* [with _Tp = ns3::Flow, std::_List_iterator<_Tp>::reference = ns3::Flow&]() != m_endPoint->ns3::Ipv4EndPoint::m_localAddr’
+../src/adtcp/model/fst.cc:181:51: note: candidates are:
+./ns3/flow.h:44:10: note: bool ns3::Flow::operator!=(ns3::Flow)
+./ns3/flow.h:44:10: note:   no known conversion for argument 1 from ‘ns3::Ipv4Address’ to ‘ns3::Flow’
+./ns3/ptr.h:314:1: note: template<class T1, class T2> bool ns3::operator!=(const ns3::Ptr<T>&, const T2*)
+./ns3/ptr.h:321:1: note: template<class T1, class T2> bool ns3::operator!=(const T1*, ns3::Ptr<T2>&)
+./ns3/ptr.h:335:1: note: template<class T1, class T2> bool ns3::operator!=(const ns3::Ptr<T>&, const ns3::Ptr<T2>&)
+./ns3/callback.h:1213:6: note: template<class R, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9> bool ns3::operator!=(ns3::Callback<R, T1, T2, T3, T4, T5, T6, T7, T8, T9>, ns3::Callback<R, T1, T2, T3, T4, T5, T6, T7, T8, T9>)
+./ns3/traced-value.h:161:6: note: template<class T, class U> bool ns3::operator!=(const ns3::TracedValue<T>&, const ns3::TracedValue<U>&)
+./ns3/traced-value.h:167:6: note: template<class T, class U> bool ns3::operator!=(const ns3::TracedValue<T>&, const U&)
+./ns3/traced-value.h:173:6: note: template<class T, class U> bool ns3::operator!=(const U&, const ns3::TracedValue<T>&)
+./ns3/type-id.h:399:13: note: bool ns3::operator!=(ns3::TypeId, ns3::TypeId)
+./ns3/type-id.h:399:13: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘ns3::TypeId’
+./ns3/address.h:230:6: note: bool ns3::operator!=(const ns3::Address&, const ns3::Address&)
+./ns3/address.h:230:6: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Address&’
+./ns3/ipv4-address.h:301:13: note: bool ns3::operator!=(const ns3::Ipv4Address&, const ns3::Ipv4Address&)
+./ns3/ipv4-address.h:301:13: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Ipv4Address&’
+./ns3/ipv4-address.h:317:6: note: bool ns3::operator!=(const ns3::Ipv4Mask&, const ns3::Ipv4Mask&)
+./ns3/ipv4-address.h:317:6: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Ipv4Mask&’
+./ns3/ipv6-address.h:490:13: note: bool ns3::operator!=(const ns3::Ipv6Address&, const ns3::Ipv6Address&)
+./ns3/ipv6-address.h:490:13: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Ipv6Address&’
+./ns3/ipv6-address.h:515:6: note: bool ns3::operator!=(const ns3::Ipv6Prefix&, const ns3::Ipv6Prefix&)
+./ns3/ipv6-address.h:515:6: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Ipv6Prefix&’
+./ns3/int64x64-cairo.h:155:13: note: bool ns3::operator!=(const ns3::int64x64_t&, const ns3::int64x64_t&)
+./ns3/int64x64-cairo.h:155:13: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const double&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const double&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const double&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const int&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const int&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const int&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const long int&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const long int&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const long int&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const long long int&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const long long int&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const long long int&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const unsigned int&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const unsigned int&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const unsigned int&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const long unsigned int&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const long unsigned int&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const long unsigned int&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const ns3::int64x64_t&, const long long unsigned int&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::int64x64_t&’
+./ns3/int64x64.h:76:1: note: bool ns3::operator!=(const long long unsigned int&, const ns3::int64x64_t&)
+./ns3/int64x64.h:76:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const long long unsigned int&’
+./ns3/nstime.h:605:1: note: bool ns3::operator!=(const ns3::Time&, const ns3::Time&)
+./ns3/nstime.h:605:1: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Time&’
+./ns3/ipv4-interface-address.h:92:13: note: bool ns3::operator!=(const ns3::Ipv4InterfaceAddress&, const ns3::Ipv4InterfaceAddress&)
+./ns3/ipv4-interface-address.h:92:13: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::Ipv4InterfaceAddress&’
+./ns3/event-id.h:86:6: note: bool ns3::operator!=(const ns3::EventId&, const ns3::EventId&)
+./ns3/event-id.h:86:6: note:   no known conversion for argument 1 from ‘ns3::Flow’ to ‘const ns3::EventId&’
+../src/adtcp/model/fst.cc:188:3: error: control reaches end of non-void function [-Werror=return-type]
+cc1plus: all warnings being treated as errors
+Waf: Leaving directory `/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build'
+Build failed
+ -> task in 'adtcp-example' failed (exit status 1): 
+	{task 160594828: cxx adtcp-example.cc -> adtcp-example.cc.1.o}
+['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing', '-pthread', '-I.', '-I..', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DHAVE_SYS_IOCTL_H=1', '-DHAVE_IF_NETS_H=1', '-DHAVE_NET_ETHERNET_H=1', '-DHAVE_PACKET_H=1', '-DHAVE_IF_TUN_H=1', '../src/adtcp/examples/adtcp-example.cc', '-c', '-o', 'src/adtcp/examples/adtcp-example.cc.1.o']
+ -> task in 'ns3-adtcp-test' failed (exit status 1): 
+	{task 160593452: cxx adtcp-test-suite.cc -> adtcp-test-suite.cc.3.o}
+['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing', '-I../src/adtcp', '-fPIC', '-pthread', '-I.', '-I..', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DHAVE_SYS_IOCTL_H=1', '-DHAVE_IF_NETS_H=1', '-DHAVE_NET_ETHERNET_H=1', '-DHAVE_PACKET_H=1', '-DHAVE_IF_TUN_H=1', '-DNS_TEST_SOURCEDIR="src/adtcp/test"', '../src/adtcp/test/adtcp-test-suite.cc', '-c', '-o', 'src/adtcp/test/adtcp-test-suite.cc.3.o']
+ -> task in 'ns3-adtcp' failed (exit status 1): 
+	{task 160458476: cxx fst.cc -> fst.cc.1.o}
+['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing', '-fPIC', '-pthread', '-I.', '-I..', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DHAVE_SYS_IOCTL_H=1', '-DHAVE_IF_NETS_H=1', '-DHAVE_NET_ETHERNET_H=1', '-DHAVE_PACKET_H=1', '-DHAVE_IF_TUN_H=1', '../src/adtcp/model/fst.cc', '-c', '-o', 'src/adtcp/model/fst.cc.1.o']

@@ -140,7 +140,7 @@ public:
   static void GetValueByName (std::string name, AttributeValue &value);
 
 
-private:
+public:
   friend class GlobalValueTestCase;
 
   static Vector *GetVector (void);
@@ -150,6 +150,7 @@ private:
   Ptr<AttributeValue> m_initialValue;
   Ptr<AttributeValue> m_currentValue;
   Ptr<const AttributeChecker> m_checker;
+
 };
 
 } // namespace ns3

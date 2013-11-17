@@ -18,7 +18,6 @@
  *
  * Author: Adrian Sai-wah Tam <adrian.sw.tam@gmail.com>
  */
-
 #define NS_LOG_APPEND_CONTEXT \
   if (m_node) { std::clog << Simulator::Now ().GetSeconds () << " [node " << m_node->GetId () << "] "; }
 
@@ -48,15 +47,32 @@
 #include "tcp-header.h"
 #include "rtt-estimator.h"
 
-#include "ns3/ipv4-address.h"
-#include <fstream>
+//add by jackguan
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 #include <algorithm>
+
+
+
+#include "ns3/ipv4-address.h"
+#include <fstream>
+#include <map>
 
 
 NS_LOG_COMPONENT_DEFINE ("TcpSocketBase");
 
 namespace ns3 {
+
+//typedef std::map<Ipv4Address, Fst> Host2Fst;
+//typedef std::map<RedQueue, Ipv4Address> Queue2Fst;
+//Queue2Fst q2f;
+
+Host2Fst H2F::h2f;
+
+bool debug = false;
+bool debug2 = false;
 
 NS_OBJECT_ENSURE_REGISTERED (TcpSocketBase);
 
@@ -382,15 +398,7 @@ TcpSocketBase::Connect (const Address & address)
         }
       InetSocketAddress transport = InetSocketAddress::ConvertFrom (address);
 
-      uint32_t add = transport.GetIpv4().m_address;
-  	std::ofstream myfile;
-  	myfile.open ("probing.txt", std::ios::app);
-  	myfile << "TcpSocketBase::Connect add: "
-  			<< ((add >> 24) & 0xff) << "."
-  		     << ((add >> 16) & 0xff) << "."
-  		     << ((add >> 8) & 0xff) << "."
-  		     << ((add >> 0) & 0xff) << "\n";
-  	myfile.close();
+      //uint32_t add = transport.GetIpv4().m_address;
 
       m_endPoint->SetPeer (transport.GetIpv4 (), transport.GetPort ());
       m_endPoint6 = 0;
@@ -537,13 +545,6 @@ TcpSocketBase::ShutdownRecv (void)
 int
 TcpSocketBase::Send (Ptr<Packet> p, uint32_t flags)
 {
-	std::ofstream myfile;
-	myfile.open ("socketBaseSend.txt", std::ios::app);
-	myfile << "Send add: "
-
-				 << "\n";
-	myfile.close();
-
   NS_LOG_FUNCTION (this << p);
   NS_ABORT_MSG_IF (flags, "use of flags is not supported in TcpSocketBase::Send()");
   if (m_state == ESTABLISHED || m_state == SYN_SENT || m_state == CLOSE_WAIT)
@@ -578,16 +579,6 @@ TcpSocketBase::Send (Ptr<Packet> p, uint32_t flags)
 int
 TcpSocketBase::SendTo (Ptr<Packet> p, uint32_t flags, const Address &address)
 {
-	std::ofstream myfile;
-	myfile.open ("example.txt", std::ios::app);
-	myfile << "SendTo add: "
-				<< static_cast<int>(address.m_data[0]) << "."
-				 << static_cast<int>(address.m_data[1]) << "."
-				 << static_cast<int>(address.m_data[2]) << "."
-				 << static_cast<int>(address.m_data[3])
-				 << "\n";
-	myfile.close();
-
   return Send (p, flags); // SendTo() and Send() are the same
 }
 
@@ -1123,12 +1114,6 @@ TcpSocketBase::ProcessEstablished (Ptr<Packet> packet, const TcpHeader& tcpHeade
 void
 TcpSocketBase::ReceivedAck (Ptr<Packet> packet, const TcpHeader& tcpHeader)
 {
-
-
-	//printf("Length is %d %d %d %d\n",(char)tcpHeader.m_source.m_data[0],(char)tcpHeader.m_source.m_data[1],(char)tcpHeader.m_source.m_data[2],(char)tcpHeader.m_source.m_data[3]);
-	//printf  ("%02x.%02x.%02x.%02x",tcpHeader.m_source.m_data[0],tcpHeader.m_source.m_data[1],tcpHeader.m_source.m_data[2],tcpHeader.m_source.m_data[3]);
-
-
   NS_LOG_FUNCTION (this << tcpHeader);
 
   // Received ACK. Compare the ACK number against highest unacked seqno
@@ -2055,15 +2040,43 @@ TcpSocketBase::AvailableWindow ()
 uint16_t
 TcpSocketBase::AdvertisedWindowSize ()
 {
-	//return 536;
-  return std::min (m_rxBuffer.MaxBufferSize () - m_rxBuffer.Size (), (uint32_t)m_maxWinSize);
+	// flow control by jackguan
+	if(debug) std::cout << "here is AdvertisedWindowSize\n";
+	AddrPort addrPort(m_endPoint->GetLocalAddress().m_address,
+			m_endPoint->GetLocalPort(),
+			m_endPoint->GetPeerAddress().m_address,
+			m_endPoint->GetPeerPort());
+
+    Flow f(addrPort, 1000);
+
+    std::list<Flow>::iterator fit = H2F::h2f[m_endPoint->GetLocalAddress()].Find(f);
+    //if(debug2) std::cout << "ipipipipip: " << m_endPoint->GetLocalAddress().Get() << std::endl;
+    H2F::h2f[m_endPoint->GetLocalAddress()].SetqAvg( (rand() % 20) );//for testing
+    if(debug2) std::cout << "the config of fst: "
+    		<< H2F::h2f[m_endPoint->GetLocalAddress()].GetMinTh() << " "
+    		<< H2F::h2f[m_endPoint->GetLocalAddress()].GetMaxTh() << " \n" ;
+    if(debug && (fit == H2F::h2f[m_endPoint->GetLocalAddress()].GetFlowList().end())) std::cout << "fst not foudn!!\n";
+	if( fit->GetAdctpState() == Flow::ACTIVE )
+	  return std::min (m_rxBuffer.MaxBufferSize () - m_rxBuffer.Size (), (uint32_t)m_maxWinSize);
+	else
+	  return fit->GetrWnd();
 }
 
 // Receipt of new packet, put into Rx buffer
 void
 TcpSocketBase::ReceivedData (Ptr<Packet> p, const TcpHeader& tcpHeader)
 {
-	//m_rWnd = 2000;
+  // flow control by jackguan
+  if(debug) std::cout << "here is ReceivedData\n";
+  // check if this is the end host or just a router
+	AddrPort addrPort(m_endPoint->GetLocalAddress().m_address,
+			m_endPoint->GetLocalPort(),
+			m_endPoint->GetPeerAddress().m_address,
+			m_endPoint->GetPeerPort());
+  Flow f(addrPort, rand() % 100);
+  Host2Fst::iterator fstit = H2F::h2f.find(m_endPoint->GetLocalAddress());
+  if(fstit != H2F::h2f.end())
+	  H2F::h2f[m_endPoint->GetLocalAddress()].FlowSchedule(f);
 
   NS_LOG_FUNCTION (this << tcpHeader);
   NS_LOG_LOGIC ("seq " << tcpHeader.GetSequenceNumber () <<

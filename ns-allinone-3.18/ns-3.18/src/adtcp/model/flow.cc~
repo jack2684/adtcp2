@@ -3,28 +3,34 @@
 #include "flow.h"
 
 namespace ns3 {
+  Flow::Flow(AddrPort newAddrPort)
+  {
+    addrPort = newAddrPort;
+  }
 
-  uint16_t 
+  void
   Flow::SlowDown(float rate)
   {
-    return SlowDown();
+     SlowDown();
   }
-  uint16_t 
+  void
   Flow::SpeedUp(float rate)
   {
     return SpeedUp();
   }
-  uint16_t 
+  void
   Flow::SlowDown()
   {
     // this is the exact size of MSS
-    return 536;
+    m_adtcpSate = INACTIVE;
+    m_rWnd = 536;
   }
-  uint16_t 
+  void
   Flow::SpeedUp()
   {
     // means no flow control
-    return -1;
+    m_adtcpSate = ACTIVE;
+    m_rWnd = -1;
   }
 
   long long
@@ -39,23 +45,28 @@ namespace ns3 {
     return m_adtcpSate;
   }
   
+  uint32_t 
+  Flow::GetrWnd()
+  {
+    return m_rWnd;
+  }
+  
   void
-  Flow::GetAdctpState(Flow::FlowSate_t set)
+  Flow::SetAdctpState(Flow::FlowSate_t set)
   {
     m_adtcpSate = set;
   }
   
-  Ipv4EndPoint* 
-  Flow::GetEndPoint()
+  AddrPort 
+  Flow::GetAddrPort()
   {
-    return m_endPoint;
+    return addrPort;
   }
   
   bool 
   Flow::operator== (Flow param)
   {
-    if(param.m_endPoint == m_endPoint
-      && param.m_endPoint == m_endPoint
+    if(param.addrPort == addrPort
       && param.m_flowSize == m_flowSize
       && param.m_adtcpSate == m_adtcpSate)
       return true;
@@ -66,14 +77,15 @@ namespace ns3 {
   bool 
   Flow::operator!= (Flow param)
   {
-    if(param.m_endPoint != m_endPoint
-      || param.m_endPoint != m_endPoint
+    if(param.addrPort != addrPort
+      || param.addrPort != addrPort
       || param.m_flowSize != m_flowSize
       || param.m_adtcpSate != m_adtcpSate)
       return false;
     else
       return true;
   }  
+    
 }
 
 

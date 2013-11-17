@@ -21,8 +21,14 @@
 #include "ns3/internet-module.h"
 #include "ns3/point-to-point-module.h"
 #include "ns3/applications-module.h"
+#include "ns3/adtcp.h" //by jackguan
 
 using namespace ns3;
+
+//typedef std::map<Ipv4Address, Fst> Host2Fst;
+//extern Host2Fst h2f;
+//typedef std::map<AddrPort, Flow> AddrPort2Flow;
+//extern AddrPort2Flow ap2f;
 
 NS_LOG_COMPONENT_DEFINE ("FifthScriptExample");
 
@@ -221,6 +227,18 @@ main (int argc, char *argv[])
   sinkApps.Start (Seconds (0.));
   sinkApps.Stop (Seconds (99.));
 
+  uint16_t sinkPort2 = 8081;
+  Address sinkAddress2 (InetSocketAddress (interfaces.GetAddress (1), sinkPort2));
+  PacketSinkHelper packetSinkHelper2 ("ns3::TcpSocketFactory", InetSocketAddress (Ipv4Address::GetAny (), sinkPort2));
+  ApplicationContainer sinkApps2 = packetSinkHelper2.Install (nodes.Get (1));
+  sinkApps2.Start (Seconds (0.));
+  sinkApps2.Stop (Seconds (99.));
+
+
+  //add by jackguan, register fst on a sink machine
+  Fst fst(interfaces.GetAddress(1).Get(), 20, 5, 15);
+  H2F::h2f[interfaces.GetAddress(1)] = fst;
+
   Ptr<Socket> ns3TcpSocket = Socket::CreateSocket (nodes.Get (0), TcpSocketFactory::GetTypeId ());
   ns3TcpSocket->TraceConnectWithoutContext ("CongestionWindow", MakeCallback (&CwndChange));
   ns3TcpSocket->TraceConnectWithoutContext ("SocketState", MakeCallback (&SateRec));
@@ -230,6 +248,12 @@ main (int argc, char *argv[])
   nodes.Get (0)->AddApplication (app);
   app->SetStartTime (Seconds (1.));
   app->SetStopTime (Seconds (99.));
+
+  Ptr<MyApp> app2 = CreateObject<MyApp> ();
+  app2->Setup (ns3TcpSocket, sinkAddress2, 1040, 1000, DataRate ("1Gbps"));
+  nodes.Get (0)->AddApplication (app2);
+  app2->SetStartTime (Seconds (1.));
+  app2->SetStopTime (Seconds (99.));
 
   devices.Get (1)->TraceConnectWithoutContext ("PhyRxDrop", MakeCallback (&RxDrop));
 

@@ -36,7 +36,14 @@
 #include "tcp-rx-buffer.h"
 #include "rtt-estimator.h"
 
+#include "ns3/adtcp.h" // by jackguan
+
 namespace ns3 {
+
+//typedef std::map<Ipv4Address, Fst> Host2Fst;
+//Host2Fst h2f;
+//typedef std::map<AddrPort, Flow> AddrPort2Flow;
+//AddrPort2Flow ap2f;
 
 class Ipv4EndPoint;
 class Ipv6EndPoint;
@@ -190,7 +197,7 @@ protected:
   virtual void ReadOptions (const TcpHeader&); // Read option from incoming packets
   virtual void AddOptions (TcpHeader&); // Add option to outgoing packets
 
-protected:
+public:
   // Counters and events
   EventId           m_retxEvent;       //< Retransmission event
   EventId           m_lastAckEvent;    //< Last ACK timeout event
@@ -241,8 +248,9 @@ protected:
   uint16_t              m_maxWinSize;  //< Maximum window size to advertise
   TracedValue<uint32_t> m_rWnd;        //< Flow control window at remote side
 
-  //adtcp essential
-
+  //adtcp essentials by jackguan
+  //class Fst fst; 				//< this is the flow schedule table
+  //Flow f;
 };
 
 } // namespace ns3

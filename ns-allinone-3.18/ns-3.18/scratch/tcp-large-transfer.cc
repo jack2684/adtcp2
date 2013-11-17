@@ -40,10 +40,19 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/ipv4-global-routing-helper.h"
 
+//
+#include "ns3/adtcp.h"
+
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("TcpLargeTransfer");
 
+typedef std::map<Ipv4Address, Fst> Host2Fst;
+//extern Host2Fst h2f;
+
+bool debug = true;
+
+Host2Fst H2F::h2f;
 
 // The number of bytes to send in this simulation.
 static const uint32_t totalTxBytes = 1200;
@@ -152,10 +161,10 @@ int main (int argc, char *argv[])
   ApplicationContainer apps2 = sink2.Install (n1n2.Get (1));
 
   apps.Start (Seconds (0.0));
-  apps.Stop (Seconds (500.0));
+  apps.Stop (Seconds (3.0));
 
   apps2.Start (Seconds (0.0));
-  apps2.Stop (Seconds (500.0));
+  apps2.Stop (Seconds (3.0));
 
   // Create a source to send packets from n0.  Instead of a full Application
   // and the helper APIs you might see in other example files, this example
@@ -185,9 +194,18 @@ int main (int argc, char *argv[])
   Simulator::ScheduleNow (&StartFlow, localSocket,
                           ipInterfs.GetAddress (1), servPort+1);
 
-  //Simulator::ScheduleNow (&StartFlow, localSocket2,
-    //                      ipInterfs.GetAddress (1), servPort);
+  Simulator::ScheduleNow (&StartFlow, localSocket2,
+                          ipInterfs.GetAddress (1), servPort);
 
+  //add by jackguan, register fst on a sink machine
+  //Fst fst(ipInterfs.GetAddress(1).Get(), 20, 5, 15);
+  //if(debug) std::cout << ">>ipipipipip: " << ipInterfs.GetAddress(1).Get() << std::endl;
+  //H2F::h2f[ipInterfs.GetAddress(1)] = fst;
+  if(debug) std::cout << "the config of fst in main: "
+  		<< H2F::h2f[ipInterfs.GetAddress(1)].GetMinTh() << " "
+  		<< H2F::h2f[ipInterfs.GetAddress(1)].GetMaxTh() << " \n" ;
+
+  //std::map<Ipv4Address, Fst>
 
   // One can toggle the comment for the following line on or off to see the
   // effects of finite send buffer modelling.  One can also change the size of
@@ -202,7 +220,7 @@ int main (int argc, char *argv[])
 
   // Finally, set up the simulator to run.  The 1000 second hard limit is a
   // failsafe in case some change above causes the simulation to never end
-  Simulator::Stop (Seconds (1000));
+  Simulator::Stop (Seconds (100));
   Simulator::Run ();
   Simulator::Destroy ();
 }

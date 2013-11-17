@@ -6,14 +6,19 @@
 # def configure(conf):
 #     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
 
+#def configure(conf):
+#     conf.env.append_value("LINKFLAGS","-lstl"); 
+#     conf.env.append_value("CFLAGS","-I/usr/local/include");
+#     conf.env['xercersc'] = conf.check(mandatory=True, lib='lstl', uselib_store='XERCES')
+     
+
 def build(bld):
-    module = bld.create_ns3_module('adtcp', ['core'])
+    module = bld.create_ns3_module('adtcp', ['internet', 'bridge', 'mpi', 'network', 'core'])
+#    module.use.append("XERCES")
     module.source = [
-        'model/flow.cc',
-        'model/fst.cc',
+        'model/adtcp.cc',
         'helper/adtcp-helper.cc',
         ]
-
     module_test = bld.create_ns3_module_test_library('adtcp')
     module_test.source = [
         'test/adtcp-test-suite.cc',
@@ -22,8 +27,7 @@ def build(bld):
     headers = bld(features='ns3header')
     headers.module = 'adtcp'
     headers.source = [
-        'model/flow.h',
-        'model/fst.h',
+        'model/adtcp.h',
         'helper/adtcp-helper.h',
         ]
 

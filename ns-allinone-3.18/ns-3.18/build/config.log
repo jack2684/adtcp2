@@ -1,6 +1,6 @@
-# project ns (3.18) configured on Mon Nov 11 13:11:22 2013 by
+# project ns (3.18) configured on Sat Nov 16 12:51:36 2013 by
 # waf 1.7.11 (abi 98, python 20703f0 on linux2)
-# using ./waf configure --enable-examples --enable-tests
+# using ./waf configure
 #
 ----------------------------------------
 Setting top to
@@ -115,7 +115,7 @@ from /home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/
     raise Errors.BuildError(self.producer.error)
 BuildError: Build failed
  -> task in 'testprog' failed (exit status 1): 
-	{task 152559692: cxxprogram test.cpp.1.o -> testprog}
+	{task 141611340: cxxprogram test.cpp.1.o -> testprog}
 ['/usr/bin/g++', '-Wl,-Bsymbolic-functions', '-Wl,-z,relro', 'test.cpp.1.o', '-o', '/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build/.conf_check_3b2479b91ea1f8aedc2bbc867fa4858e/testbuild/testprog', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/usr/lib', '-lpython2.7']
 
 not found
@@ -183,7 +183,7 @@ from /home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/
     raise Errors.BuildError(self.producer.error)
 BuildError: Build failed
  -> task in 'testprog' failed (exit status 1): 
-	{task 152676844: cxx test.cpp -> test.cpp.1.o}
+	{task 141736652: cxx test.cpp -> test.cpp.1.o}
 ['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-fno-strict-aliasing', '-fwrapv', '-fstack-protector', '-fno-strict-aliasing', '-I/usr/include/python2.7', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DPYTHONDIR="/usr/local/lib/python2.7/dist-packages"', '-DPYTHONARCHDIR="/usr/local/lib/python2.7/dist-packages"', '-DNDEBUG', '../test.cpp', '-c', '-o', 'test.cpp.1.o']
 
 :-(
@@ -249,7 +249,7 @@ from /home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/
     raise Errors.BuildError(self.producer.error)
 BuildError: Build failed
  -> task in 'testprog' failed (exit status 1): 
-	{task 152811436: cxx test.cpp -> test.cpp.1.o}
+	{task 141863052: cxx test.cpp -> test.cpp.1.o}
 ['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '../test.cpp', '-c', '-o', 'test.cpp.1.o']
 
 not found
@@ -283,7 +283,7 @@ from /home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/
     raise Errors.BuildError(self.producer.error)
 BuildError: Build failed
  -> task in 'testprog' failed (exit status 1): 
-	{task 152875692: cxx test.cpp -> test.cpp.1.o}
+	{task 143057804: cxx test.cpp -> test.cpp.1.o}
 ['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '../test.cpp', '-c', '-o', 'test.cpp.1.o']
 
 not found
@@ -351,7 +351,7 @@ from /home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/
     raise Errors.BuildError(self.producer.error)
 BuildError: Build failed
  -> task in 'testprog' failed (exit status 1): 
-	{task 152810924: cxx test.cpp -> test.cpp.1.o}
+	{task 141862700: cxx test.cpp -> test.cpp.1.o}
 ['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DINT64X64_USE_CAIRO=1', '-DHAVE_STDINT_H=1', '-DHAVE_INTTYPES_H=1', '../test.cpp', '-c', '-o', 'test.cpp.1.o']
 
 not found
@@ -526,7 +526,7 @@ from /home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/
     raise Errors.BuildError(self.producer.error)
 BuildError: Build failed
  -> task in 'testprog' failed (exit status 1): 
-	{task 154107212: cxx test.cpp -> test.cpp.1.o}
+	{task 143150668: cxx test.cpp -> test.cpp.1.o}
 ['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DINT64X64_USE_CAIRO=1', '-DHAVE_SYS_TYPES_H=1', '-DHAVE_SYS_STAT_H=1', '-DHAVE_DIRENT_H=1', '-DHAVE_STDLIB_H=1', '-DHAVE_GETENV=1', '-DHAVE_SIGNAL_H=1', '-DHAVE_PTHREAD_H=1', '-DHAVE_STDINT_H=1', '-DHAVE_INTTYPES_H=1', '../test.cpp', '-c', '-o', 'test.cpp.1.o']
 
 not found
