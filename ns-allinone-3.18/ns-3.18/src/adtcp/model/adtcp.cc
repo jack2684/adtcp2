@@ -390,12 +390,15 @@ namespace ns3 {
     addrPort = newAddrPort;
     m_flowSize = flowSize;
     m_adtcpSate = ACTIVE;
+    m_rWnd = -1;
   }
   
   Flow::Flow(uint64_g flowId, uint32_g flowSize)
   {
     m_flowId = flowId;
     m_flowSize = flowSize;
+    m_adtcpSate = ACTIVE;
+    m_rWnd = -1;
   }
 
   void

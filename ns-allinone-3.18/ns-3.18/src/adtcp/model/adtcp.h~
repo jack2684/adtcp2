@@ -122,7 +122,6 @@ typedef unsigned long long uint64_g;
     FlowSate_t m_adtcpSate;
     // flow rWnd
     uint32_g m_rWnd;
-
   }; 
   
   

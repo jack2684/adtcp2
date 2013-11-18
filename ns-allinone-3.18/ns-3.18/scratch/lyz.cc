@@ -223,17 +223,17 @@ static void macRecv(Ptr<const Packet> p) {
 	if (flowStartSign == 1) {
 		//TODO addFlow (flowId, packetNum);
 
-		std::cout << ">>>>adding flow " << flowId << " at: " << fstIp
-				<< std::endl;
-		H2F::h2f[fstIp].AddFlow(flowId, packetNum);
+//		std::cout << ">>>>adding flow " << flowId << " at: " << fstIp
+//				<< std::endl;
+//		H2F::h2f[fstIp].AddFlow(flowId, packetNum);
 
 		//TODO record start time of current flow
 	}
 	if (flowEndSign == 1) {
 		//TODO deleteFlow (flowId)
-		std::cout << ">>>>removing flow " << flowId << " at: " << fstIp
-				<< std::endl;
-		H2F::h2f[fstIp].RmFlow(flowId);
+//		std::cout << ">>>>removing flow " << flowId << " at: " << fstIp
+//				<< std::endl;
+//		H2F::h2f[fstIp].RmFlow(flowId);
 		//TODO record end time of current flow
 
 		if (debug)
@@ -414,10 +414,10 @@ int main(int argc, char *argv[]) {
 
 	//****************** Set up Topology - End ***************************
 
-	sendFlow(level3, 0, 39, 1000, 66, 0, GlobalEndTime, "1Mbps", sinkPort);
-	sendFlow(level3, 11, 39, 1000, 67, 0, GlobalEndTime, "1Mbps", sinkPort);
-	sendFlow(level3, 22, 39, 1000, 68, 0, GlobalEndTime, "1Mbps", sinkPort);
-	sendFlow(level3, 33, 39, 1000, 69, 0, GlobalEndTime, "1Mbps", sinkPort);
+	sendFlow(level3, 0, 39, 100, 66, 0, GlobalEndTime, "10Mbps", sinkPort);
+	sendFlow(level3, 11, 39, 100, 67, 0, GlobalEndTime, "10Mbps", sinkPort);
+	sendFlow(level3, 22, 39, 100, 68, 0, GlobalEndTime, "10Mbps", sinkPort);
+	sendFlow(level3, 33, 39, 100, 69, 0, GlobalEndTime, "10Mbps", sinkPort);
 
 	Simulator::Stop(Seconds(GlobalEndTime));
 	Simulator::Run();

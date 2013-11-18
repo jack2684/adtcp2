@@ -121,8 +121,7 @@ typedef unsigned long long uint64_g;
     // flow state
     FlowSate_t m_adtcpSate;
     // flow rWnd
-    uint32_g m_rWnd;
-
+    int m_rWnd;
   }; 
   
   
