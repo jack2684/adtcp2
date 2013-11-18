@@ -3,7 +3,7 @@
 #include "adtcp.h"
 
 
-bool debug = true;
+bool debug = false;
 bool debug2 = true;
 
 namespace ns3 {
@@ -12,11 +12,21 @@ namespace ns3 {
     :m_localAddr(localAddr),
     m_queueLimit(queueLimit),
     m_minTh(minTh),
-    m_maxTh(maxTh){
+    m_maxTh(maxTh)
+  {
     
     if(debug2) std::cout << "\t Fst::Fst, max and min:" << m_maxTh << ", " << m_minTh << std::endl;
     
-    }
+  }
+
+  void
+  Fst::Init(uint32_g localAddr, uint32_g queueLimit, double minTh, double maxTh)
+  {
+    m_localAddr = localAddr;
+    m_queueLimit = queueLimit;
+    m_minTh = minTh;
+    m_maxTh = maxTh;
+  }
 
   Fst::FlowList
   Fst::GetFlowList()
@@ -78,10 +88,23 @@ namespace ns3 {
     std::set<uint64_g>::iterator setit = m_flowIdSet.find(flowId);
     if(setit != m_flowIdSet.end())
     {
-      if(debug2) std::cout << "AddFlow: duplicate flow adding\n";
+      if(debug2) 
+      {      
+        std::cout << "AddFlow: duplicate flow adding\n";
+        std::cout << "current flow set size " << m_flowIdSet.size() << std::endl;
+        std::cout << "current flow list size " << m_flowList.size() << std::endl;
+        std::cout << flowId << " -- this is the IDs:\n";    
+        std::list<Flow>::iterator fit = m_flowList.begin();
+        for(; fit != m_flowList.end(); fit++)
+        {
+          std::cout << "priting flowIds: " << fit->GetFlowId() << std::endl;
+        }         
+      }
       return -1;
     }
     m_flowIdSet.insert(flowId);
+    
+    if(debug2) std::cout << "Fst::FlowSchedule: flow number: " << m_flowList.size() + 1 << std::endl;
     
     std::list<Flow>::iterator it, itPre; 
     // to find the right position, sort by flow size
@@ -130,13 +153,24 @@ namespace ns3 {
     
     m_flowIdSet.erase(flowId);
     std::list<Flow>::iterator fit = Find(flowId);
+    
     if(fit != m_flowList.end())
     {
       m_flowList.erase(fit);
     }
     else
     {
-      if(debug2) std::cout << "cannot remove the non-exisitng flow\n";
+      if(debug2)
+      {
+        std::cout << "current flow list size " << m_flowList.size() << std::endl;
+        std::cout << flowId << " -- cannot remove the non-exisitng flow, this is the IDs:\n";    
+        std::list<Flow>::iterator fit = m_flowList.begin();
+        for(; fit != m_flowList.end(); fit++)
+        {
+          std::cout << "priting flowIds: " << fit->GetFlowId() << std::endl;
+        }        
+      }
+                    
       return -1;
     }
     
@@ -146,17 +180,20 @@ namespace ns3 {
   int 
   Fst::FlowSchedule(Flow f)
   {
-    if(debug) std::cout << "\t Fst::FlowSchedule\n";
+    if(debug) std::cout << "Fst::FlowSchedule\n";
   
     if(!CheckValid(f))  
       exit(-1);  
       
     std::list<Flow>::iterator fit = Find(f);
     if(fit == m_flowList.end())
+    {
       AddFlow(f);
+      if(debug2) std::cout << "new flow: " << f.GetFlowId() << std::endl;
+    }
       
     // if there is only 1 flow, we don't schedule
-    if(debug2) std::cout << "\t Fst::FlowSchedule: flow number: " << m_flowList.size() << std::endl;
+    if(debug2) std::cout << "Fst::FlowSchedule: flow number: " << m_flowList.size() << std::endl;
     if(m_flowList.size() > 1)
     {
       // if it is your time to be slow down..
@@ -340,7 +377,10 @@ namespace ns3 {
   {
     if(debug) std::cout << "\t Fst::Find\n";
     std::list<Flow>::iterator fit = m_flowList.begin();
-    for(; fit != m_flowList.end() && fit->GetFlowId != flowId; fit++){}
+    for(; fit != m_flowList.end() && fit->GetFlowId() != flowId; fit++)
+    {
+//      if(debug2) std::cout << "comparing flowid: " << fit->GetFlowId() << " and " << 
+    }
     //if(debug && fit != m_flowList.end()) std::cout << "\t\t Fst::Find: flow found! " ;
     return fit;
   }
@@ -439,9 +479,9 @@ namespace ns3 {
       /*|| param.addrPort != addrPort
       || param.m_flowSize != m_flowSize
       || param.m_adtcpSate != m_adtcpSate*/)
-      return false;
-    else
       return true;
+    else
+      return false;
   }  
     
 }

@@ -252,7 +252,7 @@ public:
   // packet time constant in packets/second
   double m_ptc;
   // Average queue length
-  double m_qAvg;
+  //double m_qAvg;
   // number of packets since last random number generation
   uint32_t m_count;
   /*

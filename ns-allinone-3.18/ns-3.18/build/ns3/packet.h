@@ -57,6 +57,7 @@ public:
   class Item
   {
 public:
+
     /**
      * \returns the ns3::TypeId associated to this tag.
      */
@@ -208,6 +209,9 @@ public:
    * Create an empty packet with a new uid (as returned
    * by getUid).
    */
+	 Buffer m_buffer;
+
+
   Packet ();
   Packet (const Packet &o);
   Packet &operator = (const Packet &o);
@@ -400,6 +404,10 @@ public:
    */
   uint64_t GetUid (void) const;
 
+  uint64_t GetFlowid (void) const;
+
+  void SetFlowid (uint64_t value) const;
+
   /**
    * \param os output stream in which the data should be printed.
    *
@@ -584,7 +592,7 @@ private:
 
   uint32_t Deserialize (uint8_t const*buffer, uint32_t size);
 
-  Buffer m_buffer;
+
   ByteTagList m_byteTagList;
   PacketTagList m_packetTagList;
   PacketMetadata m_metadata;

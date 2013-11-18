@@ -2041,20 +2041,18 @@ uint16_t
 TcpSocketBase::AdvertisedWindowSize ()
 {
 	// flow control by jackguan
-	if(debug) std::cout << "here is AdvertisedWindowSize\n";
-	AddrPort addrPort(m_endPoint->GetLocalAddress().m_address,
-			m_endPoint->GetLocalPort(),
-			m_endPoint->GetPeerAddress().m_address,
-			m_endPoint->GetPeerPort());
-
-    Flow f(addrPort, 1000);
-
-    std::list<Flow>::iterator fit = H2F::h2f[m_endPoint->GetLocalAddress()].Find(f);
-    //if(debug2) std::cout << "ipipipipip: " << m_endPoint->GetLocalAddress().Get() << std::endl;
-    H2F::h2f[m_endPoint->GetLocalAddress()].SetqAvg( (rand() % 20) );//for testing
-    if(debug2) std::cout << "the config of fst: "
-    		<< H2F::h2f[m_endPoint->GetLocalAddress()].GetMinTh() << " "
-    		<< H2F::h2f[m_endPoint->GetLocalAddress()].GetMaxTh() << " \n" ;
+//	if(debug) std::cout << "here is AdvertisedWindowSize\n";
+//	AddrPort addrPort(m_endPoint->GetLocalAddress().m_address,
+//			m_endPoint->GetLocalPort(),
+//			m_endPoint->GetPeerAddress().m_address,
+//			m_endPoint->GetPeerPort());
+//    Flow f(addrPort, 1000);
+    std::list<Flow>::iterator fit = H2F::h2f[m_endPoint->GetLocalAddress().Get()].Find(f);
+//    //if(debug2) std::cout << "ipipipipip: " << m_endPoint->GetLocalAddress().Get() << std::endl;
+//    H2F::h2f[m_endPoint->GetLocalAddress()].SetqAvg( (rand() % 20) ); // for testing
+//    if(debug2) std::cout << "the config of fst: "
+//    		<< H2F::h2f[m_endPoint->GetLocalAddress()].GetMinTh() << " "
+//    		<< H2F::h2f[m_endPoint->GetLocalAddress()].GetMaxTh() << " \n" ;
     if(debug && (fit == H2F::h2f[m_endPoint->GetLocalAddress()].GetFlowList().end())) std::cout << "fst not foudn!!\n";
 	if( fit->GetAdctpState() == Flow::ACTIVE )
 	  return std::min (m_rxBuffer.MaxBufferSize () - m_rxBuffer.Size (), (uint32_t)m_maxWinSize);
@@ -2067,16 +2065,17 @@ void
 TcpSocketBase::ReceivedData (Ptr<Packet> p, const TcpHeader& tcpHeader)
 {
   // flow control by jackguan
-  if(debug) std::cout << "here is ReceivedData\n";
-  // check if this is the end host or just a router
-	AddrPort addrPort(m_endPoint->GetLocalAddress().m_address,
-			m_endPoint->GetLocalPort(),
-			m_endPoint->GetPeerAddress().m_address,
-			m_endPoint->GetPeerPort());
-  Flow f(addrPort, rand() % 100);
-  Host2Fst::iterator fstit = H2F::h2f.find(m_endPoint->GetLocalAddress());
-  if(fstit != H2F::h2f.end())
-	  H2F::h2f[m_endPoint->GetLocalAddress()].FlowSchedule(f);
+//  if(debug) std::cout << "here is ReceivedData\n";
+//  // check if this is the end host or just a router
+//	AddrPort addrPort(m_endPoint->GetLocalAddress().m_address,
+//			m_endPoint->GetLocalPort(),
+//			m_endPoint->GetPeerAddress().m_address,
+//			m_endPoint->GetPeerPort());
+//  Host2Fst::iterator fstit = H2F::h2f.find(m_endPoint->GetLocalAddress());
+//  if(fstit != H2F::h2f.end()){
+//	  Flow f(m_endPoint->GetLocalAddress().m_address , rand() % 100);
+//	  H2F::h2f[m_endPoint->GetLocalAddress()].FlowSchedule(f);
+//  }
 
   NS_LOG_FUNCTION (this << tcpHeader);
   NS_LOG_LOGIC ("seq " << tcpHeader.GetSequenceNumber () <<

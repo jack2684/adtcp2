@@ -26,6 +26,8 @@
 #include "ns3/net-device-container.h"
 #include "ns3/node-container.h"
 #include "ns3/deprecated.h"
+#include "ns3/point-to-point-net-device.h"
+
 
 #include "ns3/trace-helper.h"
 
@@ -49,6 +51,8 @@ public:
    * Create a PointToPointHelper to make life easier when creating point to
    * point networks.
    */
+	Ptr<PointToPointNetDevice> devA; //langyuze
+	Ptr<PointToPointNetDevice> devB; //langyuze
   PointToPointHelper ();
   virtual ~PointToPointHelper () {}
 

@@ -132,6 +132,7 @@ typedef unsigned long long uint64_g;
   public:
     Fst(){}
     Fst(uint32_g localAddr, uint32_g queueLimit, double minTh, double maxTh);
+    void Init(uint32_g localAddr, uint32_g queueLimit, double minTh, double maxTh);
     
     typedef std::list<Flow> FlowList;
     
@@ -190,7 +191,7 @@ typedef unsigned long long uint64_g;
   // you should make statement of a static variable,
   // and then at the .cc you should define such as 'Host2Fst H2F::h2f' globally,
   // (without using extern), then you can use it globally
-  typedef std::map<Ipv4Address, Fst> Host2Fst;
+  typedef std::map<uint32_g, Fst> Host2Fst;
   class H2F
   {
   public:

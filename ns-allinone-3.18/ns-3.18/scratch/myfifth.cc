@@ -236,24 +236,30 @@ main (int argc, char *argv[])
 
 
   //add by jackguan, register fst on a sink machine
-  Fst fst(interfaces.GetAddress(1).Get(), 20, 5, 15);
-  H2F::h2f[interfaces.GetAddress(1)] = fst;
+
 
   Ptr<Socket> ns3TcpSocket = Socket::CreateSocket (nodes.Get (0), TcpSocketFactory::GetTypeId ());
   ns3TcpSocket->TraceConnectWithoutContext ("CongestionWindow", MakeCallback (&CwndChange));
   ns3TcpSocket->TraceConnectWithoutContext ("SocketState", MakeCallback (&SateRec));
 
   Ptr<MyApp> app = CreateObject<MyApp> ();
-  app->Setup (ns3TcpSocket, sinkAddress, 1040, 1000, DataRate ("1Gbps"));
+  app->Setup (ns3TcpSocket, sinkAddress, 1040, 1000, DataRate ("0.5Gbps"));
   nodes.Get (0)->AddApplication (app);
   app->SetStartTime (Seconds (1.));
   app->SetStopTime (Seconds (99.));
 
   Ptr<MyApp> app2 = CreateObject<MyApp> ();
-  app2->Setup (ns3TcpSocket, sinkAddress2, 1040, 1000, DataRate ("1Gbps"));
+  app2->Setup (ns3TcpSocket, sinkAddress2, 1040, 2000, DataRate ("1Gbps"));
   nodes.Get (0)->AddApplication (app2);
   app2->SetStartTime (Seconds (1.));
   app2->SetStopTime (Seconds (99.));
+
+  // host register
+//  Fst fst(interfaces.GetAddress(1).Get(), 20, 5, 15);
+//  fst.AddFlow(1,1000);
+//  fst.AddFlow(2,2000);
+//  H2F::h2f[interfaces.GetAddress(1)] = fst;
+
 
   devices.Get (1)->TraceConnectWithoutContext ("PhyRxDrop", MakeCallback (&RxDrop));
 

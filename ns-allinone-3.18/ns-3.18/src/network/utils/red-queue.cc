@@ -254,6 +254,8 @@ RedQueue::DoEnqueue (Ptr<Packet> p)
     }
 
   m_qAvg = Estimator (nQueued, m + 1, m_qAvg, m_qW);
+  //m_qAvg = 10;
+  //std::cout << ">>>>>>> the average queue size in red-queue: "<< m_qAvg << std::endl;
 
   NS_LOG_DEBUG ("\t bytesInQueue  " << m_bytesInQueue << "\tQavg " << m_qAvg);
   NS_LOG_DEBUG ("\t packetsInQueue  " << m_packets.size () << "\tQavg " << m_qAvg);

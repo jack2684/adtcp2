@@ -226,12 +226,16 @@ PointToPointHelper::Install (Ptr<Node> a, Ptr<Node> b)
 {
   NetDeviceContainer container;
 
-  Ptr<PointToPointNetDevice> devA = m_deviceFactory.Create<PointToPointNetDevice> ();
+  //langyuze
+  //Ptr<PointToPointNetDevice> devA = m_deviceFactory.Create<PointToPointNetDevice> ();
+  devA = m_deviceFactory.Create<PointToPointNetDevice> ();
   devA->SetAddress (Mac48Address::Allocate ());
   a->AddDevice (devA);
   Ptr<Queue> queueA = m_queueFactory.Create<Queue> ();
   devA->SetQueue (queueA);
-  Ptr<PointToPointNetDevice> devB = m_deviceFactory.Create<PointToPointNetDevice> ();
+  //langyuze
+  //Ptr<PointToPointNetDevice> devB = m_deviceFactory.Create<PointToPointNetDevice> ();
+  devB = m_deviceFactory.Create<PointToPointNetDevice> ();
   devB->SetAddress (Mac48Address::Allocate ());
   b->AddDevice (devB);
   Ptr<Queue> queueB = m_queueFactory.Create<Queue> ();

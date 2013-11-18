@@ -172,6 +172,7 @@ Packet::operator = (const Packet &o)
 Packet::Packet (uint32_t size)
   : m_buffer (size),
     m_byteTagList (),
+
     m_packetTagList (),
     /* The upper 32 bits of the packet id in 
      * metadata is for the system id. For non-
@@ -394,6 +395,18 @@ Packet::GetUid (void) const
 {
   return m_metadata.GetUid ();
 }
+uint64_t
+Packet::GetFlowid (void) const
+{
+  return 0;//m_metadata.packetFlowId;
+}
+void
+Packet::SetFlowid (uint64_t value) const
+{
+  //m_metadata.packetFlowId = value;
+}
+
+
 
 void 
 Packet::PrintByteTags (std::ostream &os) const

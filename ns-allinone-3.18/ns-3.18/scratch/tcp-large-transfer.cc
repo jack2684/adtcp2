@@ -52,7 +52,7 @@ typedef std::map<Ipv4Address, Fst> Host2Fst;
 
 bool debug = true;
 
-Host2Fst H2F::h2f;
+//Host2Fst H2F::h2f;
 
 // The number of bytes to send in this simulation.
 static const uint32_t totalTxBytes = 1200;
@@ -201,9 +201,9 @@ int main (int argc, char *argv[])
   //Fst fst(ipInterfs.GetAddress(1).Get(), 20, 5, 15);
   //if(debug) std::cout << ">>ipipipipip: " << ipInterfs.GetAddress(1).Get() << std::endl;
   //H2F::h2f[ipInterfs.GetAddress(1)] = fst;
-  if(debug) std::cout << "the config of fst in main: "
-  		<< H2F::h2f[ipInterfs.GetAddress(1)].GetMinTh() << " "
-  		<< H2F::h2f[ipInterfs.GetAddress(1)].GetMaxTh() << " \n" ;
+//  if(debug) std::cout << "the config of fst in main: "
+//  		<< H2F::h2f[ipInterfs.GetAddress(1)].GetMinTh() << " "
+//  		<< H2F::h2f[ipInterfs.GetAddress(1)].GetMaxTh() << " \n" ;
 
   //std::map<Ipv4Address, Fst>
 

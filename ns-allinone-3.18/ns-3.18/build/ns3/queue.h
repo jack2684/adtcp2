@@ -159,7 +159,7 @@ protected:
   // called by subclasses to notify parent of packet drops.
   void Drop (Ptr<Packet> packet);
 
-private:
+public:
   TracedCallback<Ptr<const Packet> > m_traceEnqueue;
   TracedCallback<Ptr<const Packet> > m_traceDequeue;
   TracedCallback<Ptr<const Packet> > m_traceDrop;
@@ -170,6 +170,8 @@ private:
   uint32_t m_nTotalReceivedPackets;
   uint32_t m_nTotalDroppedBytes;
   uint32_t m_nTotalDroppedPackets;
+  // Average queue length
+  double m_qAvg;
 };
 
 } // namespace ns3
