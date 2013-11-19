@@ -4,9 +4,9 @@
 
 namespace ns3 {
 
-  bool debug = true;
+  bool debug = false;
   bool debug2 = true;
-  bool debug3 = false;
+  bool debug3 = true;
 
   Fst::Fst(uint32_g localAddr, uint32_g queueLimit, double minTh, double maxTh)
     :m_localAddr(localAddr),
@@ -14,7 +14,7 @@ namespace ns3 {
     m_minTh(minTh),
     m_maxTh(maxTh)
   {
-    if(debug2) std::cout << "\t Fst::Fst, max and min:" << m_maxTh << ", " << m_minTh << std::endl;
+    if(debug2) std::cout << "Fst::Fst, max and min:" << m_maxTh << ", " << m_minTh << std::endl;
     
   }
 
@@ -103,7 +103,7 @@ namespace ns3 {
     }
     m_flowIdSet.insert(flowId);
     
-    if(debug2) std::cout << "Fst::FlowSchedule: flow number: " << m_flowList.size() + 1 << std::endl;
+    //if(debug2) std::cout << "Fst::FlowSchedule: flow number: " << m_flowList.size() + 1 << std::endl;
     
     std::list<Flow>::iterator it, itPre; 
     // to find the right position, sort by flow size
@@ -173,7 +173,7 @@ namespace ns3 {
         std::cout << "current flow list size " << m_flowList.size() << std::endl;
         //std::list<Flow>::iterator fit = m_flowList.begin();
         //for(; fit != m_flowList.end(); fit++)
-        //{
+        //{std::cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$ " << H2F::h2f[117967150]->m_qAvg << std::endl;
           //std::cout << "priting flowIds: " << fit->GetFlowId() << std::endl;
         //}        
       }
@@ -206,7 +206,7 @@ namespace ns3 {
     }
       
     // if there is only 1 flow, we don't schedule
-    if(debug2) std::cout << "Fst::FlowSchedule: flow number: " << m_flowList.size() << std::endl;
+    //if(debug2) std::cout << "Fst::FlowSchedule: flow number: " << m_flowList.size() << std::endl;
     if(m_flowList.size() > 1)
     {
       // if it is your time to be slow down..
@@ -241,14 +241,14 @@ namespace ns3 {
   bool 
   Fst::ExcceedMaxTh()
   {
-    if(debug2) std::cout << "\t Fst::ExcceedMaxTh: " << m_qAvg - m_maxTh << "\n";
+    if(debug2 && m_qAvg > m_maxTh) std::cout << "\t Fst::ExcceedMaxTh: " << m_qAvg << '\t' << m_maxTh << "\n";
     return m_qAvg > m_maxTh ? true : false;
   }
 
   bool 
   Fst::ExcceedMinTh()
   {
-    if(debug2) std::cout << "\t Fst::ExcceedMinTh: " << -m_qAvg + m_minTh << "\n";
+    if(debug2 && m_qAvg < m_minTh ) std::cout << "\t Fst::ExcceedMinTh: " << m_qAvg << '\t' << m_minTh << "\n";
     return m_qAvg < m_minTh ? true : false;
   }
 

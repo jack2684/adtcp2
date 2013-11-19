@@ -190,7 +190,7 @@ typedef unsigned long long uint64_g;
   // you should make statement of a static variable,
   // and then at the .cc you should define such as 'Host2Fst H2F::h2f' globally,
   // (without using extern), then you can use it globally
-  typedef std::map<uint32_g, Fst> Host2Fst;
+  typedef std::map<uint32_g, Fst > Host2Fst;
   class H2F
   {
   public:

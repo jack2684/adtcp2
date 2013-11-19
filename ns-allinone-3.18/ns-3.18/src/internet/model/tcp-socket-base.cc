@@ -70,9 +70,9 @@ namespace ns3 {
 
 Host2Fst H2F::h2f;
 
-bool debug = true;
+bool debug = false;
 bool debug2 = false;
-bool debug3 = true;
+bool debug3 = false;
 
 NS_OBJECT_ENSURE_REGISTERED(TcpSocketBase);
 
@@ -1705,14 +1705,11 @@ uint32_t TcpSocketBase::AvailableWindow() {
 }
 
 uint16_t TcpSocketBase::AdvertisedWindowSize() {
-	if(m_adWnd != -1)
-	{
-		if(debug) std::cout << "controled adWnd: " << m_adWnd << std::endl;
+	if (m_adWnd > 0) {
 		return m_adWnd;
-	}
-	else
+	} else
 		return std::min(m_rxBuffer.MaxBufferSize() - m_rxBuffer.Size(),
-			(uint32_t) m_maxWinSize);
+				(uint32_t) m_maxWinSize);
 }
 
 // Receipt of new packet, put into Rx buffer
@@ -1722,20 +1719,21 @@ void TcpSocketBase::ReceivedData(Ptr<Packet> p, const TcpHeader& tcpHeader) {
 			" ack " << tcpHeader.GetAckNumber () <<
 			" pkt size " << p->GetSize () );
 
-	std::cout << "ni ma you bu lai la!??????\n";
 
 	//TODO flowschedule
-	uint32_t fstIp = ((uint32_t *) (&(p->PeekData()[16])))[0];
+	uint32_t fstIp = ((uint32_t *) (&(p->PeekData()[14])))[0];
+
 	uint32_t hFlowId = ((uint32_t *) (&(p->PeekData()[6])))[0];
 	//H2F::h2f[fstIp].Find(hFlowId);
-	std::cout << "Find() in ReceivedData\n";
 	std::list<Flow>::iterator fit = H2F::h2f[fstIp].Find(hFlowId);
-	if (fit->GetAdctpState() == Flow::INACTIVE)
-		m_adWnd = 1500;
-	else
+	if (fit->GetAdctpState() == Flow::INACTIVE) {
+		if(debug) std::cout << "an INACTIVE\n " << std::endl;
+		m_adWnd = 536;
+	} else {
+		if(debug) std::cout << "an ACTIVE\n " << std::endl;
 		m_adWnd = -1;
+	}
 
-	if(debug) std::cout << "ReceivedData adWnd: " << m_adWnd << std::endl;
 	//TODO END
 
 // Put into Rx buffer

@@ -151,6 +151,8 @@ void MyApp::SendPacket(void) {
 
 	((uint64_t *) (&send_packet_buffer[6]))[0] = m_flowId; //Setting flowId at offset +6 byte
 
+	((uint32_t *) (&send_packet_buffer[14]))[0] = m_dstIp; //Setting flowId at offset +14 byte
+
 	Ptr<Packet> packet = Create<Packet>(send_packet_buffer, m_packetSize);
 
 	//printf("Sending packet: Uid=%llu ; Original size =%d ; flowId=%llu \n",
@@ -242,8 +244,6 @@ static void macSend(Ptr<Packet> p) {
 
 static void macRecv(Ptr<Packet> p) {
 
-	if (debug3)
-		std::cout << "macRecv 1\n";
 	uint64_t flowId;
 	uint32_t packetNum;
 	Ptr<Queue> q = queuePtr[addrs[39].Get()];
@@ -254,8 +254,27 @@ static void macRecv(Ptr<Packet> p) {
 	uint8_t flowEndSign = p->PeekData()[HEADER_LENGTH + 1];
 
 	//TODO 1) get queue info, 2) flow schedule, 3) set rateControl
-	uint32_t fstIp = ((uint32_t *) (&(p->PeekData()[16])))[0];
+	uint8_t * fstIp_reversed = (uint8_t *)(&(p->PeekData()[16]));
+
+	unsigned int s1,s2,s3,s4;
+	s1=fstIp_reversed[3];
+	s2=fstIp_reversed[2];
+	s3=fstIp_reversed[1];
+	s4=fstIp_reversed[0];
+
+	uint32_t fstIp = 0;
+	fstIp = fstIp | s1;
+	fstIp = fstIp | s2<<8;
+	fstIp = fstIp | s3<<16;
+	fstIp = fstIp | s4<<24;
+//			for (unsigned int i = 0; i < 70; i++) {
+//				printf("%d ", p->PeekData()[i]);
+//			}
+
 	H2F::h2f[fstIp].SetqAvg(q->m_qAvg);
+	if(debug3) std::cout << "average queue size: " << q->m_qAvg << std::endl;
+
+
 	//H2F::h2f[fstIp].SetqAvg(10);
 	if (debug3)
 		std::cout << "going to set m_adWnd\n";
@@ -273,25 +292,21 @@ static void macRecv(Ptr<Packet> p) {
 
 	if (flowStartSign == 1) {
 		//TODO addFlow (flowId, packetNum);
-
-//		std::cout << ">>>>adding flow " << flowId << " at: " << fstIp
-//				<< std::endl;
 		H2F::h2f[fstIp].AddFlow(flowId, packetNum);
-
 		//TODO record start time of current flow
 	}
 
-	if (1) {
 
-			printf(
-					"%lf Received Packet: Uid=%llu, FlowStart=%d, FlowEnd=%d, packetSent=%u, Size = %d, flowId=%llu\n",
-					Simulator::Now().GetSeconds(), p->GetUid(), flowStartSign,
-					flowEndSign, packetNum, p->GetSize(), flowId);
-		}
 
 	if (flowEndSign == 1) {
 
+		if (1) {
 
+				printf(
+						"%lf Received Packet: Uid=%llu, FlowStart=%d, FlowEnd=%d, packetSent=%u, Size = %d, flowId=%llu\n",
+						Simulator::Now().GetSeconds(), p->GetUid(), flowStartSign,
+						flowEndSign, packetNum, p->GetSize(), flowId);
+			}
 
 		//TODO deleteFlow (flowId)
 //		std::cout << ">>>>removing flow " << flowId << " at: " << fstIp
@@ -356,7 +371,7 @@ static void macRecv(Ptr<Packet> p) {
 	}
 
 	//std::cout << "moment queue size: " << q->m_packets.size() << std::endl;
-	//std::cout << "moment queue size: " << q->m_qs << " id= "<<q->queueIp<< std::endl;
+	if(debug3) std::cout << "moment queue size: " << q->m_qs << " id= "<<q->queueIp<< std::endl;
 
 	if (debug)
 		printf("Queue avg length = %lf\n", q->m_qAvg); //TODO add m_qAvg to Queue.h
@@ -369,8 +384,6 @@ static void macRecv(Ptr<Packet> p) {
 		printf("\n");
 	}
 
-	if (debug3)
-		std::cout << "macRecv 2\n";
 //        uint32_t
 //        dst_ip = ((uint32_t *)(&(p->PeekData()[16])))[0];
 //        //dst_ip++;
@@ -451,7 +464,7 @@ int main(int argc, char *argv[]) {
 		Ipv4InterfaceContainer interfaces = address.Assign(devices);
 
 		// TODO register the fst of each machine
-		fst[i].Init(interfaces.GetAddress(1).Get(), 20, 5, 15);
+		fst[i].Init(interfaces.GetAddress(1).Get(), 25, 5, 10);
 		H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
 
 		addrs.push_back(interfaces.GetAddress(1));
@@ -540,11 +553,11 @@ int main(int argc, char *argv[]) {
 
 	//****************** Set up Topology - End ***************************
 
-	sendFlow(level3, 0, 39, 50, 66, 0, GlobalEndTime, "100Mbps", sinkPort);
-	sendFlow(level3, 11, 39, 40, 67, 0, GlobalEndTime, "100Mbps", sinkPort);
-	sendFlow(level3, 22, 39, 30, 68, 0, GlobalEndTime, "100Mbps", sinkPort);
-	sendFlow(level3, 33, 39, 20, 69, 0, GlobalEndTime, "100Mbps", sinkPort);
-	sendFlow(level3, 33, 39, 10, 70, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 0, 39, 500, 66, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 11, 39, 400, 67, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 22, 39, 300, 68, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 33, 39, 200, 69, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 33, 39, 100, 70, 0, GlobalEndTime, "100Mbps", sinkPort);
 
 
 	Simulator::Stop(Seconds(GlobalEndTime));
