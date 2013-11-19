@@ -34,6 +34,7 @@ bool debug = false;
 bool debug2 = false;
 bool debug3 = false;
 bool debug4 = false;
+bool adtcp = true;
 
 //******* GLOBAL CONSTANTS - END******
 
@@ -477,7 +478,8 @@ int main(int argc, char *argv[]) {
 
 		// TODO register the fst of each machine
 		fst[i].Init(interfaces.GetAddress(1).Get(), 25, 5, 10);
-		H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
+		if(adtcp)
+			H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
 
 		addrs.push_back(interfaces.GetAddress(1));
 
@@ -605,7 +607,10 @@ int main(int argc, char *argv[]) {
 	std::ofstream myout;
 
 	char path[100]; // enough to hold all numbers up to 64-bits
-	sprintf(path, "output%d", totalFlowNum);
+	if(adtcp)
+		sprintf(path, "output%d", totalFlowNum);
+	else
+		sprintf(path, "adtcp-output%d", totalFlowNum);
 
 	myout.open(path, std::fstream::in | std::fstream::out | std::fstream::app);
 
@@ -634,6 +639,8 @@ int main(int argc, char *argv[]) {
 
 	myout.close();
 	index.close();
+
+	std::cout << "\n<<<<<<<<Simulation ends successfully!>>>>>>>>\n";
 
 	return 0;
 }

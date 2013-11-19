@@ -34,6 +34,7 @@ bool debug = false;
 bool debug2 = false;
 bool debug3 = false;
 bool debug4 = false;
+bool datcp = true;
 
 //******* GLOBAL CONSTANTS - END******
 
@@ -465,7 +466,8 @@ int main(int argc, char *argv[]) {
 
 		// TODO register the fst of each machine
 		fst[i].Init(interfaces.GetAddress(1).Get(), 25, 5, 10);
-		H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
+		if(adtcp)
+			H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
 
 		addrs.push_back(interfaces.GetAddress(1));
 
