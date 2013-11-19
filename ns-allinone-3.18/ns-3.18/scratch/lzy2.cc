@@ -30,15 +30,17 @@
 #define ACCESS_BW 1
 #define AGGREGATE_BW 2
 #define HEADER_LENGTH 40 // Careful! this is also defined in tcp-socket-base.cc!!!
+
+
+//******* GLOBAL CONSTANTS - END******
+
+using namespace ns3;
+
 bool debug = false;
 bool debug2 = false;
 bool debug3 = false;
 bool debug4 = false;
 bool adtcp = true;
-
-//******* GLOBAL CONSTANTS - END******
-
-using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("FifthScriptExample");
 
