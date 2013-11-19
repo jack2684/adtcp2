@@ -69,6 +69,8 @@ NS_LOG_COMPONENT_DEFINE ("RedQueue");
 
 namespace ns3 {
 
+bool debug = true;
+
 NS_OBJECT_ENSURE_REGISTERED (RedQueue);
 
 TypeId RedQueue::GetTypeId (void)
@@ -149,12 +151,13 @@ TypeId RedQueue::GetTypeId (void)
 
 RedQueue::RedQueue () :
   Queue (),
-  m_packets (),
+  //m_packets (),
   m_bytesInQueue (0),
   m_hasRedStarted (false)
 {
   NS_LOG_FUNCTION (this);
   m_uv = CreateObject<UniformRandomVariable> ();
+  m_qs = 0;
 }
 
 RedQueue::~RedQueue ()
@@ -212,6 +215,8 @@ RedQueue::DoEnqueue (Ptr<Packet> p)
 {
   NS_LOG_FUNCTION (this << p);
 
+
+
   if (!m_hasRedStarted )
     {
       NS_LOG_INFO ("Initializing RED params.");
@@ -253,6 +258,7 @@ RedQueue::DoEnqueue (Ptr<Packet> p)
       m_idle = 0;
     }
 
+  //std::cout << ">>>>>>>>>>>>>>>>>>>>moment queue size: " << m_qs <<" id=" <<queueIp<< std::endl;
   m_qAvg = Estimator (nQueued, m + 1, m_qAvg, m_qW);
   //m_qAvg = 10;
   //std::cout << ">>>>>>> the average queue size in red-queue: "<< m_qAvg << std::endl;
@@ -329,7 +335,7 @@ RedQueue::DoEnqueue (Ptr<Packet> p)
 
   NS_LOG_LOGIC ("Number packets " << m_packets.size ());
   NS_LOG_LOGIC ("Number bytes " << m_bytesInQueue);
-
+  m_qs++;
   return true;
 }
 
@@ -423,6 +429,9 @@ RedQueue::Estimator (uint32_t nQueued, uint32_t m, double qAvg, double qW)
 {
   NS_LOG_FUNCTION (this << nQueued << m << qAvg << qW);
   double newAve;
+
+  // by jackguan
+  //qW = 0.25;
 
   newAve = qAvg;
   while (--m >= 1)
@@ -615,6 +624,8 @@ RedQueue::DoDequeue (void)
 {
   NS_LOG_FUNCTION (this);
 
+//  if(debug) std::cout << "moment queue size: " << m_packets.size() -1 << std::endl;
+
   if (m_packets.empty ())
     {
       NS_LOG_LOGIC ("Queue empty");
@@ -625,6 +636,7 @@ RedQueue::DoDequeue (void)
     }
   else
     {
+	  m_qs--;
       m_idle = 0;
       Ptr<Packet> p = m_packets.front ();
       m_packets.pop_front ();

@@ -144,7 +144,7 @@ typedef unsigned long long uint64_g;
     // flow schedule methods
     //bool IsRegiter(Ipv4EndPoint* m_endPoint);           // check if it an end host
     //int FlowScheduleHandler(Flow f);         // begin flow schedule handler
-    int FlowSchedule(Flow f);         // begin flow schedule
+    int FlowSchedule(uint64_g flowId);         // begin flow schedule
     bool ExcceedMaxTh();              // check if average queue size too long
     bool ExcceedMinTh();              // check if average queue size too small
     bool ToDecelerate(Flow f);        // check if this flow should be SlowDowned

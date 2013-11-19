@@ -29,9 +29,11 @@
 #define MAX_PAYLOAD 536
 #define ACCESS_BW 1
 #define AGGREGATE_BW 2
-#define HEADER_LENGTH 40
-bool debug = true;
+#define HEADER_LENGTH 40 // Careful! this is also defined in tcp-socket-base.cc!!!
+bool debug = false;
 bool debug2 = false;
+bool debug3 = false;
+bool debug4 = false;
 
 //******* GLOBAL CONSTANTS - END******
 
@@ -52,9 +54,9 @@ uint16_t sinkPort = 8080;
 
 uint8_t *send_packet_buffer;
 std::string level3DataRate = "10Mbps";
-std::string level3Delay = "20ms";
+std::string level3Delay = "1ms";
 std::string level2DataRate = "100Mbps";
-std::string level2Delay = "20ms";
+std::string level2Delay = "1ms";
 
 //******* VARIABLES FOR PACKET SENDING - END ******
 
@@ -65,7 +67,8 @@ public:
 	virtual ~MyApp();
 
 	void Setup(Ptr<Socket> socket, Address address, uint32_t packetSize,
-			uint32_t nPackets, DataRate dataRate, uint64_t flowId);
+			uint32_t nPackets, DataRate dataRate, uint64_t flowId,
+			uint32_t dstIp);
 
 private:
 	virtual void StartApplication(void);
@@ -83,11 +86,14 @@ private:
 	bool m_running;
 	uint32_t m_packetsSent;
 	uint64_t m_flowId;
+	float m_rateControl;
+	uint32_t m_dstIp;
 };
 
 MyApp::MyApp() :
 		m_socket(0), m_peer(), m_packetSize(0), m_nPackets(0), m_dataRate(0), m_sendEvent(), m_running(
-				false), m_packetsSent(0), m_flowId(0) {
+				false), m_packetsSent(0), m_flowId(0), m_rateControl(1), m_dstIp(
+				0) {
 }
 
 MyApp::~MyApp() {
@@ -95,13 +101,16 @@ MyApp::~MyApp() {
 }
 
 void MyApp::Setup(Ptr<Socket> socket, Address address, uint32_t packetSize,
-		uint32_t nPackets, DataRate dataRate, uint64_t flowId) {
+		uint32_t nPackets, DataRate dataRate, uint64_t flowId, uint32_t dstIp) {
 	m_socket = socket;
+
 	m_peer = address;
 	m_packetSize = packetSize;
 	m_nPackets = nPackets;
 	m_dataRate = dataRate;
 	m_flowId = flowId;
+	m_rateControl = 1;
+	m_dstIp = dstIp;
 }
 
 void MyApp::StartApplication(void) {
@@ -147,6 +156,26 @@ void MyApp::SendPacket(void) {
 	//printf("Sending packet: Uid=%llu ; Original size =%d ; flowId=%llu \n",
 	//              packet->GetUid(), packet->GetSize(), m_flowId);
 
+	// TODO rate control
+//	std::list<Flow>::iterator fit = H2F::h2f[m_dstIp].Find(m_flowId);
+//	if (debug4)
+//		std::cout << "flow id and state: " << m_flowId << '\t'
+//				<< fit->GetAdctpState() << std::endl;
+//	if (debug4) {
+//		std::cout << "receiver IP " << m_dstIp << std::endl;
+//		std::cout << "lyz in rate control printing fst:\n";
+//		std::list<Flow>::iterator fit = H2F::h2f[m_dstIp].m_flowList.begin();
+//		for (; fit != H2F::h2f[m_dstIp].m_flowList.end(); fit++) {
+//			std::cout << fit->GetFlowId() << "\t" << fit->GetAdctpState()
+//					<< std::endl;
+//		}
+//	}
+//	if (fit->GetAdctpState() == Flow::INACTIVE) {
+//		m_rateControl = 0.1;
+//	} else
+//		m_rateControl = 1;
+	// TODO End
+
 	int ret = m_socket->Send(packet);
 
 	if (ret != -1) {
@@ -156,6 +185,7 @@ void MyApp::SendPacket(void) {
 	} else {
 		ScheduleTx();
 	}
+
 }
 
 void MyApp::ScheduleTx(void) {
@@ -163,7 +193,8 @@ void MyApp::ScheduleTx(void) {
 		Time tNext(
 				Seconds(
 						m_packetSize * 8
-								/ static_cast<double>(m_dataRate.GetBitRate())));
+								/ static_cast<double>(m_rateControl
+										* m_dataRate.GetBitRate())));
 		m_sendEvent = Simulator::Schedule(tNext, &MyApp::SendPacket, this);
 
 	}
@@ -190,15 +221,29 @@ static void GetFlowMetaData(Ptr<const Packet> p, uint64_t * ret_flowId,
 
 }
 
-static void macSend(Ptr<const Packet> p) {
+static void macSend(Ptr<Packet> p) {
 
 	//printf("%lf Sending Packet: Uid=%llu, Size = %d\n",
 	//      Simulator::Now().GetSeconds(), p->GetUid(), p->GetSize());
+//
+//	Ipv4Header ipheader;
+//	TcpHeader header;
+//
+//	p->RemoveHeader(ipheader);
+//	std::cout<<ipheader.GetSource()<<"::::"<<ipheader.GetDestination()<<"\n";
+//
+//	p->RemoveHeader(header);
+//
+//	//header.SetWindowSize(1);
+//	p->AddHeader(header);
+//	p->AddHeader(ipheader);
 
 }
 
-static void macRecv(Ptr<const Packet> p) {
+static void macRecv(Ptr<Packet> p) {
 
+	if (debug3)
+		std::cout << "macRecv 1\n";
 	uint64_t flowId;
 	uint32_t packetNum;
 	Ptr<Queue> q = queuePtr[addrs[39].Get()];
@@ -208,9 +253,15 @@ static void macRecv(Ptr<const Packet> p) {
 	uint8_t flowStartSign = p->PeekData()[HEADER_LENGTH];
 	uint8_t flowEndSign = p->PeekData()[HEADER_LENGTH + 1];
 
+	//TODO 1) get queue info, 2) flow schedule, 3) set rateControl
 	uint32_t fstIp = ((uint32_t *) (&(p->PeekData()[16])))[0];
-
 	H2F::h2f[fstIp].SetqAvg(q->m_qAvg);
+	//H2F::h2f[fstIp].SetqAvg(10);
+	if (debug3)
+		std::cout << "going to set m_adWnd\n";
+	if(flowId != 0)
+		H2F::h2f[fstIp].FlowSchedule(flowId);
+	// TODO End
 
 	if (p->GetSize() > HEADER_LENGTH) {
 		flowStartSign = p->PeekData()[HEADER_LENGTH];
@@ -225,29 +276,90 @@ static void macRecv(Ptr<const Packet> p) {
 
 //		std::cout << ">>>>adding flow " << flowId << " at: " << fstIp
 //				<< std::endl;
-//		H2F::h2f[fstIp].AddFlow(flowId, packetNum);
+		H2F::h2f[fstIp].AddFlow(flowId, packetNum);
 
 		//TODO record start time of current flow
 	}
-	if (flowEndSign == 1) {
-		//TODO deleteFlow (flowId)
-//		std::cout << ">>>>removing flow " << flowId << " at: " << fstIp
-//				<< std::endl;
-//		H2F::h2f[fstIp].RmFlow(flowId);
-		//TODO record end time of current flow
 
-		if (debug)
+	if (1) {
+
 			printf(
 					"%lf Received Packet: Uid=%llu, FlowStart=%d, FlowEnd=%d, packetSent=%u, Size = %d, flowId=%llu\n",
 					Simulator::Now().GetSeconds(), p->GetUid(), flowStartSign,
 					flowEndSign, packetNum, p->GetSize(), flowId);
+		}
+
+	if (flowEndSign == 1) {
+
+
+
+		//TODO deleteFlow (flowId)
+//		std::cout << ">>>>removing flow " << flowId << " at: " << fstIp
+//				<< std::endl;
+
+		if (debug4) {
+			std::cout << "receiver IP " << fstIp << std::endl;
+			std::cout << "lyz before removing printing fst:\n";
+			std::list<Flow>::iterator fit = H2F::h2f[fstIp].m_flowList.begin();
+			for (; fit != H2F::h2f[fstIp].m_flowList.end(); fit++) {
+				std::cout << fit->GetFlowId() << "\t" << fit->GetAdctpState()
+						<< std::endl;
+			}
+		}
+
+		H2F::h2f[fstIp].RmFlow(flowId);
+		//TODO record end time of current flow
+
+		if (debug4) {
+			std::cout << "receiver IP " << fstIp << std::endl;
+			std::cout << "lyz after removing printing fst:\n";
+			std::list<Flow>::iterator fit = H2F::h2f[fstIp].m_flowList.begin();
+			for (; fit != H2F::h2f[fstIp].m_flowList.end(); fit++) {
+				std::cout << fit->GetFlowId() << "\t" << fit->GetAdctpState()
+						<< std::endl;
+			}
+		}
+
 		//Following is a example of how to access queue length.
 
-		if (debug)
-			printf("Queue avg length = %lf\n", q->m_qAvg); //TODO add m_qAvg to Queue.h
+//		for (unsigned int i = 0; i < 70; i++) {
+//			printf("%d ", p->PeekData()[i]);
+//		}
+//		printf("before \n");
+//
+//		Ipv4Header ipheader;
+//		TcpHeader header;
+//
+//		std::cout<<ipheader.GetSource()<<"::::"<<ipheader.GetDestination()<<"\n";
+//
+//		//std::cout << "WindowSIze" << header.GetWindowSize() << "\n";
+//
+//		p->RemoveHeader(ipheader);
+//		p->RemoveHeader(header);
+
+//		for (unsigned int i = 0; i < 70; i++) {
+//			printf("%d ", p->PeekData()[i]);
+//		}
+//		printf("mid \n");
+//		for (unsigned int i = 0; i < 70; i++) {
+//			printf("%d ", p->PeekData()[i]);
+//		}
+//		printf("after \n");
+
+//	   // header.InitializeChecksum()
+//
+//	    p->PeekHeader(header);
+//	    std::cout << "IsChecksumOk?? "<< header.IsChecksumOk() << std::endl;
+//
+//	   //
 
 	}
 
+	//std::cout << "moment queue size: " << q->m_packets.size() << std::endl;
+	//std::cout << "moment queue size: " << q->m_qs << " id= "<<q->queueIp<< std::endl;
+
+	if (debug)
+		printf("Queue avg length = %lf\n", q->m_qAvg); //TODO add m_qAvg to Queue.h
 	//The following allowing code snippet print the content of the packet.
 	if (debug2) {
 		std::cout << " >>";
@@ -257,6 +369,8 @@ static void macRecv(Ptr<const Packet> p) {
 		printf("\n");
 	}
 
+	if (debug3)
+		std::cout << "macRecv 2\n";
 //        uint32_t
 //        dst_ip = ((uint32_t *)(&(p->PeekData()[16])))[0];
 //        //dst_ip++;
@@ -276,7 +390,7 @@ void sendFlow(NodeContainer level3, int src, int dst, uint32_t packetNum,
 
 	Ptr<MyApp> app = CreateObject<MyApp>();
 	app->Setup(ns3TcpSocket, sinkAddress, MAX_PAYLOAD, packetNum,
-			DataRate(dataRate), flowId);
+			DataRate(dataRate), flowId, addrs[dst].Get());
 
 	level3.Get(src)->AddApplication(app);
 
@@ -307,7 +421,7 @@ int main(int argc, char *argv[]) {
 
 	uint32_t cur_addr = 0x07080900;
 
-	//Fst *fst = new Fst[LEVEL3_NUM];
+	Fst *fst = new Fst[LEVEL3_NUM];
 	for (unsigned int i = 0; i < LEVEL3_NUM; i++) {
 
 		pointToPoint.SetDeviceAttribute("DataRate",
@@ -337,12 +451,15 @@ int main(int argc, char *argv[]) {
 		Ipv4InterfaceContainer interfaces = address.Assign(devices);
 
 		// TODO register the fst of each machine
-//		fst[i].Init(interfaces.GetAddress(1).Get(), 20, 5, 15);
-//		H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
+		fst[i].Init(interfaces.GetAddress(1).Get(), 20, 5, 15);
+		H2F::h2f[interfaces.GetAddress(1).Get()] = fst[i];
 
 		addrs.push_back(interfaces.GetAddress(1));
 
-		Ptr<Queue> queue = pointToPoint.devB->GetQueue(); //done: Queue of endpoint TODO make devA and devB public in PointToPointDevice
+		Ptr<Queue> queue = pointToPoint.devA->GetQueue(); //done: Queue of endpoint TODO make devA and devB public in PointToPointDevice
+
+		pointToPoint.devA->GetQueue()->queueIp = interfaces.GetAddress(0).Get();
+		pointToPoint.devB->GetQueue()->queueIp = interfaces.GetAddress(1).Get();
 		queuePtr[interfaces.GetAddress(1).Get()] = queue;
 
 		if (debug) {
@@ -350,7 +467,8 @@ int main(int argc, char *argv[]) {
 			interfaces.GetAddress(0).Print(std::cout);
 			std::cout << " and ";
 			interfaces.GetAddress(1).Print(std::cout);
-			std::cout << "\n";
+			std::cout << " ; " << interfaces.GetAddress(0).Get() << " and "
+					<< interfaces.GetAddress(1).Get() << "\n";
 		}
 
 		PacketSinkHelper packetSinkHelper("ns3::TcpSocketFactory",
@@ -360,10 +478,10 @@ int main(int argc, char *argv[]) {
 		sinkApps.Start(Seconds(0.));
 		sinkApps.Stop(Seconds(GlobalEndTime));
 
-		devices.Get(1)->TraceConnectWithoutContext("MacTx",
+		devices.Get(1)->TraceConnectWithoutContext("MacTx2",
 				MakeCallback(&macSend));
 
-		devices.Get(1)->TraceConnectWithoutContext("MacRx",
+		devices.Get(1)->TraceConnectWithoutContext("MacRx2",
 				MakeCallback(&macRecv));
 
 	}
@@ -398,10 +516,18 @@ int main(int argc, char *argv[]) {
 
 			address.SetBase(addr, "255.255.255.252");
 			Ipv4InterfaceContainer interfaces = address.Assign(devices);
+
+			pointToPoint.devA->GetQueue()->queueIp =
+					interfaces.GetAddress(0).Get();
+			pointToPoint.devB->GetQueue()->queueIp =
+					interfaces.GetAddress(1).Get();
+
 			if (debug) {
 				interfaces.GetAddress(0).Print(std::cout);
 				std::cout << " and ";
 				interfaces.GetAddress(1).Print(std::cout);
+				std::cout << " ; " << interfaces.GetAddress(0).Get() << " and "
+						<< interfaces.GetAddress(1).Get() << "\n";
 				std::cout << "--Router\n";
 			}
 		}
@@ -414,14 +540,18 @@ int main(int argc, char *argv[]) {
 
 	//****************** Set up Topology - End ***************************
 
-	sendFlow(level3, 0, 39, 100, 66, 0, GlobalEndTime, "10Mbps", sinkPort);
-	sendFlow(level3, 11, 39, 100, 67, 0, GlobalEndTime, "10Mbps", sinkPort);
-	sendFlow(level3, 22, 39, 100, 68, 0, GlobalEndTime, "10Mbps", sinkPort);
-	sendFlow(level3, 33, 39, 100, 69, 0, GlobalEndTime, "10Mbps", sinkPort);
+	sendFlow(level3, 0, 39, 50, 66, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 11, 39, 40, 67, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 22, 39, 30, 68, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 33, 39, 20, 69, 0, GlobalEndTime, "100Mbps", sinkPort);
+	sendFlow(level3, 33, 39, 10, 70, 0, GlobalEndTime, "100Mbps", sinkPort);
+
 
 	Simulator::Stop(Seconds(GlobalEndTime));
 	Simulator::Run();
 	Simulator::Destroy();
+
+	std::cout << "\n<<<<<<<<Simulation ends successfully!>>>>>>>>\n";
 
 	return 0;
 }

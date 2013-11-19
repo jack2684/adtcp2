@@ -1,9 +1,4 @@
 Waf: Entering directory `/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build'
-[ 740/1531] cxx: scratch/myfifth.cc -> build/scratch/myfifth.cc.6.o
-../scratch/myfifth.cc: In function ‘int main(int, char**)’:
-../scratch/myfifth.cc:231:11: error: ‘ipInterfs’ was not declared in this scope
 Waf: Leaving directory `/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build'
-Build failed
- -> task in 'myfifth' failed (exit status 1): 
-	{task 173467852: cxx myfifth.cc -> myfifth.cc.6.o}
-['/usr/bin/g++', '-O0', '-ggdb', '-g3', '-Wall', '-Werror', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing', '-pthread', '-I.', '-I..', '-I/usr/include/libxml2', '-DNS3_ASSERT_ENABLE', '-DNS3_LOG_ENABLE', '-DHAVE_SYS_IOCTL_H=1', '-DHAVE_IF_NETS_H=1', '-DHAVE_NET_ETHERNET_H=1', '-DHAVE_PACKET_H=1', '-DHAVE_IF_TUN_H=1', '../scratch/myfifth.cc', '-c', '-o', 'scratch/myfifth.cc.6.o']
+'build' finished successfully (0.909s)
+Command ['/home/jack/Documents/homework/CS169/angry_pkt_work/adtcp2/ns-allinone-3.18/ns-3.18/build/scratch/lyz'] terminated with signal SIGSEGV. Run it under a debugger to get more information (./waf --run <program> --command-template="gdb --args %s <args>").

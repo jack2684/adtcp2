@@ -85,6 +85,11 @@ PointToPointNetDevice::GetTypeId (void)
     .AddTraceSource ("MacTx", 
                      "Trace source indicating a packet has arrived for transmission by this device",
                      MakeTraceSourceAccessor (&PointToPointNetDevice::m_macTxTrace))
+
+                     .AddTraceSource ("MacTx2",
+                                                       "Trace source indicating a packet has arrived for transmission by this device",
+                                                       MakeTraceSourceAccessor (&PointToPointNetDevice::m_macTxTrace_2))
+
     .AddTraceSource ("MacTxDrop", 
                      "Trace source indicating a packet has been dropped by the device before transmission",
                      MakeTraceSourceAccessor (&PointToPointNetDevice::m_macTxDropTrace))
@@ -96,6 +101,10 @@ PointToPointNetDevice::GetTypeId (void)
                      "A packet has been received by this device, has been passed up from the physical layer "
                      "and is being forwarded up the local protocol stack.  This is a non-promiscuous trace,",
                      MakeTraceSourceAccessor (&PointToPointNetDevice::m_macRxTrace))
+                .AddTraceSource ("MacRx2",
+                                      "A packet has been received by this device, has been passed up from the physical layer "
+                                      "and is being forwarded up the local protocol stack.  This is a non-promiscuous trace,",
+                                      MakeTraceSourceAccessor (&PointToPointNetDevice::m_macRxTrace_2))
 #if 0
     // Not currently implemented for this device
     .AddTraceSource ("MacRxDrop", 
@@ -341,6 +350,8 @@ PointToPointNetDevice::Receive (Ptr<Packet> packet)
         }
 
       m_macRxTrace (packet);
+      m_macRxTrace_2(packet);
+
       m_rxCallback (this, packet, protocol, GetRemote ());
     }
 }
@@ -486,6 +497,7 @@ PointToPointNetDevice::Send (
   AddHeader (packet, protocolNumber);
 
   m_macTxTrace (packet);
+  m_macTxTrace_2 (packet);
 
   //
   // If there's a transmission in progress, we enque the packet for later

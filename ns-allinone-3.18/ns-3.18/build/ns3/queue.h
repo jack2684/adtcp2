@@ -172,6 +172,11 @@ public:
   uint32_t m_nTotalDroppedPackets;
   // Average queue length
   double m_qAvg;
+  // Moment queue
+  std::list<Ptr<Packet> > m_packets;
+  int m_qs;
+  uint32_t queueIp;
+
 };
 
 } // namespace ns3

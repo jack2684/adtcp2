@@ -7,4 +7,4 @@ Description: ns-3 module ns3-adtcp
 Version: 3.18
 Libs: -L${libdir} -Wl,-Bdynamic -lns3.18-adtcp-debug
 Cflags: -I${includedir}
-Requires: libns3.18-core-debug
+Requires: libns3.18-internet-debug libns3.18-bridge-debug libns3.18-mpi-debug libns3.18-network-debug libns3.18-core-debug

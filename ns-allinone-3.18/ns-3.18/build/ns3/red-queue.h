@@ -195,7 +195,7 @@ public:
   double ModifyP (double p, uint32_t count, uint32_t countBytes,
                   uint32_t meanPktSize, bool wait, uint32_t size);
 
-  std::list<Ptr<Packet> > m_packets;
+  //std::list<Ptr<Packet> > m_packets;
 
   uint32_t m_bytesInQueue;
   bool m_hasRedStarted;
@@ -264,6 +264,8 @@ public:
   uint32_t m_cautious;
   // Start of current idle period
   Time m_idleTime;
+
+  uint32_t m_qSize;
 
   Ptr<UniformRandomVariable> m_uv;
 };

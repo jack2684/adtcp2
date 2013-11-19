@@ -121,7 +121,7 @@ typedef unsigned long long uint64_g;
     // flow state
     FlowSate_t m_adtcpSate;
     // flow rWnd
-    uint32_g m_rWnd;
+    int m_rWnd;
   }; 
   
   
@@ -144,7 +144,7 @@ typedef unsigned long long uint64_g;
     // flow schedule methods
     //bool IsRegiter(Ipv4EndPoint* m_endPoint);           // check if it an end host
     //int FlowScheduleHandler(Flow f);         // begin flow schedule handler
-    int FlowSchedule(Flow f);         // begin flow schedule
+    int FlowSchedule(uint64_g flowId);         // begin flow schedule
     bool ExcceedMaxTh();              // check if average queue size too long
     bool ExcceedMinTh();              // check if average queue size too small
     bool ToDecelerate(Flow f);        // check if this flow should be SlowDowned
@@ -194,6 +194,7 @@ typedef unsigned long long uint64_g;
   class H2F
   {
   public:
+     static const HEADER_LENGTH uint16_g = 40;
      static Host2Fst h2f;
      //static int abcabc;
   };

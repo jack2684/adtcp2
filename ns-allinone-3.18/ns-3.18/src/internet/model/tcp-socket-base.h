@@ -247,7 +247,7 @@ public:
   uint32_t              m_segmentSize; //< Segment size
   uint16_t              m_maxWinSize;  //< Maximum window size to advertise
   TracedValue<uint32_t> m_rWnd;        //< Flow control window at remote side
-  int m_adWnd;       //< adtcp window size
+  int m_adWnd;     					   //< adtcp window size
 
   //adtcp essentials by jackguan
   //class Fst fst; 				//< this is the flow schedule table

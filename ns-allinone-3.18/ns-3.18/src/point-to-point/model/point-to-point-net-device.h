@@ -304,6 +304,7 @@ private:
    * \see class CallBackTraceSource
    */
   TracedCallback<Ptr<const Packet> > m_macTxTrace;
+  TracedCallback<Ptr< Packet> > m_macTxTrace_2;
 
   /**
    * The trace source fired when packets coming into the "top" of the device
@@ -332,6 +333,7 @@ private:
    * \see class CallBackTraceSource
    */
   TracedCallback<Ptr<const Packet> > m_macRxTrace;
+  TracedCallback<Ptr< Packet> > m_macRxTrace_2;
 
   /**
    * The trace source fired for packets successfully received by the device

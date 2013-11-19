@@ -2,11 +2,11 @@
 
 #include "adtcp.h"
 
-
-bool debug = false;
-bool debug2 = false;
-
 namespace ns3 {
+
+  bool debug = true;
+  bool debug2 = true;
+  bool debug3 = false;
 
   Fst::Fst(uint32_g localAddr, uint32_g queueLimit, double minTh, double maxTh)
     :m_localAddr(localAddr),
@@ -14,7 +14,6 @@ namespace ns3 {
     m_minTh(minTh),
     m_maxTh(maxTh)
   {
-    
     if(debug2) std::cout << "\t Fst::Fst, max and min:" << m_maxTh << ", " << m_minTh << std::endl;
     
   }
@@ -97,7 +96,7 @@ namespace ns3 {
         std::list<Flow>::iterator fit = m_flowList.begin();
         for(; fit != m_flowList.end(); fit++)
         {
-          std::cout << "priting flowIds: " << fit->GetFlowId() << std::endl;
+          std::cout << "printing flowIds: " << fit->GetFlowId() << std::endl;
         }         
       }
       return -1;
@@ -143,6 +142,10 @@ namespace ns3 {
     m_flowIdSet.erase(f.GetFlowId());
     m_flowList.remove(f);
     
+    // make sure there is at least one ACTIVE flow 
+    if(m_flowList.front().GetAdctpState() != Flow::ACTIVE)
+      m_flowList.front().SetAdctpState(Flow::ACTIVE);
+    
     return 0;
   }
 
@@ -151,24 +154,28 @@ namespace ns3 {
   {
     if(debug) std::cout << " Fst::RmFlow\n";
     
-    m_flowIdSet.erase(flowId);
-    std::list<Flow>::iterator fit = Find(flowId);
     
+    std::list<Flow>::iterator fit = Find(flowId);
     if(fit != m_flowList.end())
     {
+      if(debug2) std::cout << "removing flow: " << flowId << std::endl;
       m_flowList.erase(fit);
+      m_flowIdSet.erase(flowId);
+      // make sure there is at least one ACTIVE flow 
+      if(m_flowList.front().GetAdctpState() != Flow::ACTIVE)
+        m_flowList.front().SetAdctpState(Flow::ACTIVE);
     }
     else
     {
       if(debug2)
-      {
+      {        
+        std::cout << flowId << " -- cannot remove the non-exisitng flow\n";    
         std::cout << "current flow list size " << m_flowList.size() << std::endl;
-        std::cout << flowId << " -- cannot remove the non-exisitng flow, this is the IDs:\n";    
-        std::list<Flow>::iterator fit = m_flowList.begin();
-        for(; fit != m_flowList.end(); fit++)
-        {
-          std::cout << "priting flowIds: " << fit->GetFlowId() << std::endl;
-        }        
+        //std::list<Flow>::iterator fit = m_flowList.begin();
+        //for(; fit != m_flowList.end(); fit++)
+        //{
+          //std::cout << "priting flowIds: " << fit->GetFlowId() << std::endl;
+        //}        
       }
                     
       return -1;
@@ -178,18 +185,24 @@ namespace ns3 {
   }
 
   int 
-  Fst::FlowSchedule(Flow f)
+  Fst::FlowSchedule(uint64_g flowId)
   {
     if(debug) std::cout << "Fst::FlowSchedule\n";
-  
-    if(!CheckValid(f))  
-      exit(-1);  
       
-    std::list<Flow>::iterator fit = Find(f);
+    std::list<Flow>::iterator fit = Find(flowId);
     if(fit == m_flowList.end())
     {
-      AddFlow(f);
-      if(debug2) std::cout << "new flow: " << f.GetFlowId() << std::endl;
+      if(debug) std::cout << flowId << " -- this flow not found!!\n";
+    }
+    
+    if(debug3)
+    {
+      std::cout << "printing fst:\n";
+      std::list<Flow>::iterator fit = m_flowList.begin();
+      for(; fit != m_flowList.end(); fit++)
+      {
+        std::cout << fit->GetFlowId() << "\t" << fit->GetAdctpState() << std::endl;
+      }
     }
       
     // if there is only 1 flow, we don't schedule
@@ -197,16 +210,16 @@ namespace ns3 {
     if(m_flowList.size() > 1)
     {
       // if it is your time to be slow down..
-      if(ToDecelerate(f))
+      if(ToDecelerate(*fit))
       {
         // if average queue too long, we slow down (pause it)
         if(ExcceedMaxTh())
-          f.SlowDown(); 
-      }else if(ToAccelerate(f))
+          (*fit).SlowDown(); 
+      }else if(ToAccelerate(*fit))
       {
         // if average queue too short, we slow down (pause it)
         if(ExcceedMinTh())
-          f.SpeedUp(); 
+          (*fit).SpeedUp(); 
       }
     }
     // no schedule
@@ -397,6 +410,8 @@ namespace ns3 {
   {
     m_flowId = flowId;
     m_flowSize = flowSize;
+    m_adtcpSate = ACTIVE;
+    m_rWnd = -1;
   }
 
   void
@@ -412,7 +427,7 @@ namespace ns3 {
   void
   Flow::SlowDown()
   {
-    if(debug) std::cout << "\t Flow::SlowDown\n";
+    if(debug2) std::cout << "\t Flow::SlowDown\n";
     // this is the exact size of MSS
     m_adtcpSate = INACTIVE;
     m_rWnd = 536;
@@ -420,7 +435,7 @@ namespace ns3 {
   void
   Flow::SpeedUp()
   {
-    if(debug) std::cout << "\t Flow::SpeedUp\n";
+    if(debug2) std::cout << "\t Flow::SpeedUp\n";
     // means no flow control
     m_adtcpSate = ACTIVE;
     m_rWnd = -1;
